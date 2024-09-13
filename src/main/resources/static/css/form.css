@@ -1,0 +1,73 @@
+:root {
+    --light-yellow: rgb(247, 212, 152);
+    --dark-yellow: rgb(193, 132, 27);
+    --dark-blue: rgba(35, 74, 174, 0.973);
+    --dark-green: rgba(33, 153, 51, 0.973);
+    --light-orange: rgb(251, 241, 208);
+}
+
+.border-yellow {
+    border-color: var(--light-yellow) !important;
+}
+
+
+.form-control {
+    border-color: var(--light-yellow);
+}
+
+.form-control:focus {
+    border-color: var(--dark-yellow);
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 8px var(--dark-yellow);
+    box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 10px var(--dark-yellow);
+}
+
+.input-group-text {
+    background-color: var(--light-orange);
+    border-color: var(--light-yellow);
+}
+
+.input-group .input-group-text {
+    width: 40%;
+}
+
+.btn-custom-check {
+    --bs-btn-color: var(--dark-yellow);
+    --bs-btn-bg: var(--bs-white);
+    --bs-btn-border-color: var(--dark-yellow);
+    --bs-btn-hover-color: var(--dark-yellow); 
+    --bs-btn-active-color: var(--dark-yellow);
+    --bs-btn-active-bg: var(--light-orange);
+    --bs-btn-active-border-color: var(--dark-yellow);
+}
+
+.btn-custom-outline-success {
+    --bs-btn-color: var(--dark-green);
+    --bs-btn-bg: var(--bs-white);
+    --bs-btn-border-color: var(--dark-green);
+    --bs-btn-hover-color: var(--dark-green); 
+    --bs-btn-active-color: var(--bs-white);
+    --bs-btn-active-bg: var(--dark-green);
+}
+
+.btn-custom-outline-primary {
+    --bs-btn-color: var(--dark-blue);
+    --bs-btn-bg: var(--bs-white);
+    --bs-btn-border-color: var(--dark-blue);
+    --bs-btn-hover-color: var(--dark-blue); 
+    --bs-btn-active-color: var(--bs-white);
+    --bs-btn-active-bg: var(--dark-blue);
+}
+
+.btn-custom-warning {
+    --bs-btn-font-size: 1.2rem;
+    --bs-btn-font-weight: 600;  
+    --bs-text-opacity: .75;
+    color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
+    --bs-btn-bg: var(--light-orange);
+    --bs-btn-border-color: var(--light-yellow);
+    --bs-btn-hover-bg: var(--light-yellow);
+    --bs-btn-hover-border-color: var(--dark-yellow);
+    --bs-btn-active-bg: rgb(252, 193, 91);
+    --bs-btn-active-border-color: rgb(0, 0, 0);
+}

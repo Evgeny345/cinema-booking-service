@@ -9,7 +9,7 @@ import com.blazebit.persistence.integration.view.spring.EnableEntityViews;
 import com.blazebit.persistence.spring.data.impl.repository.BlazePersistenceRepositoryFactoryBean;
 
 @SpringBootApplication
-@EnableEntityViews("ru.kuzin.cinemaBlaze.entityView")
+@EnableEntityViews("ru.kuzin.CornCinema.entityView")
 @EnableJpaRepositories(repositoryFactoryBeanClass = BlazePersistenceRepositoryFactoryBean.class)
 @EnableCaching
 public class CornCinemaApplication {

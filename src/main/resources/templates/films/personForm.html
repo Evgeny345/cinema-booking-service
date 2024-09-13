@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>create person 2</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="/css/form.css" rel="stylesheet">
+        <link href="/css/datepicker.css" rel="stylesheet">
+    </head>
+<body style="background-color: #eee;">
+<div class="container">
+    <div class="row justify-content-center my-5">
+        <div class="col-md-6">
+            <div class="card border-yellow">
+                <div class="card-header border-yellow">
+                    <p class="text-center text-dark text-opacity-75 h2 mb-2 mx-1 mx-md-4 mt-4">Create person</p>
+                </div>
+                <div class="card-body">
+                    <form th:method="post" th:action="@{/films/createPerson}" th:object="${person}">
+                        <div class="row mb-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <label for="name" class="fw-semibold text-dark text-opacity-75 mb-1">Select name:</label>
+                                <input class="form-control" type="text" id="name" th:field="*{name}" autocomplete="off">
+                                <div style="color: #cf2200" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Title error</div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <label for="lastName" class="fw-semibold text-dark text-opacity-75 mb-1">Select last name:</label>
+                                <input class="form-control" type="text" id="lastName" th:field="*{lastName}" autocomplete="off">
+                                <div style="color: #cf2200" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Title error</div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <label for="datepicker" class="fw-semibold text-dark text-opacity-75 mb-1">Select date of birth:</label>
+                                <input class="form-control" type="text" id="datepicker" th:field="*{dateOfBirth}" autocomplete="off">
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="row mb-3">                           
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <p class="fw-semibold text-dark text-opacity-75 mb-2">Select amplua:</p>
+                                </div>
+                                <div class="row row-cols-2 gy-3 mb-3">
+                                    <div class="col" th:each="amplua : ${ampluaList}">
+                                        <div class="form-check form-check-inline d-grid gap-2 px-0 me-0">
+                                            <input class="btn-check" type="checkbox"  th:checked="${amplua.id} == 1" th:id="${amplua.id}" th:value="${amplua.id}" th:name="ampluas">
+                                            <label class="btn btn-custom-check" th:for="${amplua.id}" th:text="${amplua.profession}">Amplua</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <div class="d-grid gap-2 px-0">
+                                    <button class="btn btn-custom-warning" type="submit">Submit</button>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+$(function(){
+	$("#datepicker").datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1930:2014',
+      dateFormat: 'yy-mm-dd'
+    });
+});   
+</script>
+</body>
+</html>

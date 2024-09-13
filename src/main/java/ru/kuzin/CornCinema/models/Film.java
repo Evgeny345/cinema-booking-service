@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -20,9 +21,10 @@ import lombok.Setter;
 @Table(name = "film")
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Film {
 	
+	@EqualsAndHashCode.Include
 	private Integer id;
 	private String title;
 	private String description;
@@ -33,20 +35,20 @@ public class Film {
 	private Set<Genre> genres;
 	private Set<Country> countries;
 	private Set<Person> persons;
+	private Set<ShowTime> showTimes;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "film_id", nullable = false)
 	public Integer getId() {return id;}
 	@Column(name = "title", nullable = false, length = 64)
 	public String getTitle() {return title;}
-	@Column(name = "description", nullable = false, length = 512)
+	@Column(name = "description", length = 512)
 	public String getDescription() {return description;}
-	@Column(name = "long_description", nullable = false, length = 2048)
+	@Column(name = "long_description", length = 2048)
 	public String getLongDescription() {return longDescription;}
 	@Column(name = "duration", nullable = false)
 	public LocalTime getDuration() {return duration;}
-	@Column(name = "poster_url", nullable = false, length = 256)
+	@Column(name = "poster_url", length = 256)
 	public String getPosterUrl() {return posterUrl;}
 	@Column(name = "age_rating", nullable = false)
 	public AgeRating getAgeRating() {return ageRating;}
@@ -65,5 +67,7 @@ public class Film {
 			   joinColumns = @JoinColumn(name = "film_id"),
 			   inverseJoinColumns = @JoinColumn(name = "person_id"))
 	public Set<Person> getPersons() {return persons;}
+	@OneToMany(mappedBy = "film")
+	public Set<ShowTime> getShowTimes() {return showTimes;}
 
 }

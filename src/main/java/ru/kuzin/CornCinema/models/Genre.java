@@ -26,7 +26,6 @@ public class Genre {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "genre_id", nullable = false)
 	public Integer getId() {return id;}
 	@Column(name = "title", nullable = false, length = 32)
 	public String getTitle() {return title;}
