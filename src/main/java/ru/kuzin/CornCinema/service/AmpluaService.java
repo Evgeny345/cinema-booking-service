@@ -2,14 +2,12 @@ package ru.kuzin.CornCinema.service;
 
 import java.util.List;
 
-import ru.kuzin.CornCinema.entityView.AmpluaView;
+import ru.kuzin.CornCinema.entityView.ampluaView.AmpluaView;
 import ru.kuzin.CornCinema.models.Amplua;
 
 public interface AmpluaService {
 	
-	List<AmpluaView> getAllAmpluaView();
-
-	List<Amplua> getAllAmpluaView1();
+	List<AmpluaView> getAllAmplua();
 	
 	List<String> getAllAmpluaView2();
 	

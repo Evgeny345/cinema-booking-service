@@ -1,8 +1,12 @@
 :root {
     --light-yellow: rgb(247, 212, 152);
     --dark-yellow: rgb(193, 132, 27);
+    --light-blue: rgba(69, 126, 187, 0.973);
     --dark-blue: rgba(35, 74, 174, 0.973);
+    --light-green: rgba(57, 193, 77, 0.975);
     --dark-green: rgba(33, 153, 51, 0.973);
+    --light-red: rgba(230, 64, 64, 0.862);
+    --dark-red: rgba(227, 20, 20, 0.948);
     --light-orange: rgb(251, 241, 208);
 }
 
@@ -41,11 +45,16 @@
     --bs-btn-active-border-color: var(--dark-yellow);
 }
 
+.btn-custom-check:hover {
+    color: rgba(var(--dark-yellow), var(--bs-text-opacity)) !important;
+}
+
 .btn-custom-outline-success {
     --bs-btn-color: var(--dark-green);
     --bs-btn-bg: var(--bs-white);
     --bs-btn-border-color: var(--dark-green);
-    --bs-btn-hover-color: var(--dark-green); 
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: var(--light-green);
     --bs-btn-active-color: var(--bs-white);
     --bs-btn-active-bg: var(--dark-green);
 }
@@ -54,9 +63,20 @@
     --bs-btn-color: var(--dark-blue);
     --bs-btn-bg: var(--bs-white);
     --bs-btn-border-color: var(--dark-blue);
-    --bs-btn-hover-color: var(--dark-blue); 
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: var(--light-blue);
     --bs-btn-active-color: var(--bs-white);
     --bs-btn-active-bg: var(--dark-blue);
+}
+
+.btn-custom-outline-danger {
+    --bs-btn-color: var(--dark-red);
+    --bs-btn-bg: var(--bs-white);
+    --bs-btn-border-color: var(--dark-red);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: var(--light-red);
+    --bs-btn-active-color: var(--bs-white);
+    --bs-btn-active-bg: var(--dark-red);
 }
 
 .btn-custom-warning {
@@ -70,4 +90,24 @@
     --bs-btn-hover-border-color: var(--dark-yellow);
     --bs-btn-active-bg: rgb(252, 193, 91);
     --bs-btn-active-border-color: rgb(0, 0, 0);
+}
+
+.dropdown-menu {
+    --bs-dropdown-border-color: #ffc107;
+    --bs-dropdown-padding-x: 0.5rem;
+    width: 15rem;
+}
+
+.custom-checkbox {
+    border-color: #fd7e14;
+}
+
+.custom-checkbox:checked {
+    background-color: #fd7e14;
+    border-color: #fd7e14;
+}
+
+.custom-checkbox:focus {
+    border-color: #fd7e14;
+    box-shadow: none;
 }

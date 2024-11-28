@@ -1,4 +1,4 @@
-package ru.kuzin.CornCinema.service;
+package ru.kuzin.CornCinema.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +16,7 @@ import ru.kuzin.CornCinema.models.Film;
 import ru.kuzin.CornCinema.models.Hall;
 import ru.kuzin.CornCinema.models.SeatCategory;
 import ru.kuzin.CornCinema.models.ShowTime;
+import ru.kuzin.CornCinema.service.ShowTimeService;
 
 @Service
 public class ShowTimeServiceImpl implements ShowTimeService{

@@ -1,11 +1,7 @@
 package ru.kuzin.CornCinema.models;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,9 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,14 +25,11 @@ import lombok.Setter;
 public class Person {
 	
 	private Integer id;
-	@NotEmpty
-    @Size(max=32, message = "must be less than 32")
 	private String name;
 	private String lastName;
-	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate dateOfBirth;
-	private List<Amplua> ampluas;
-	private Set<Film> films;
+	private Set<Amplua> ampluas;
+	private Set<PersonWithAmpluaForFilm> films;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,8 +44,8 @@ public class Person {
 	@JoinTable(name = "person_amplua",
 			   joinColumns = @JoinColumn(name = "person_id"),
 			   inverseJoinColumns = @JoinColumn(name = "amplua_id"))
-	public List<Amplua> getAmpluas() {return ampluas;}
-	@ManyToMany(mappedBy = "persons")
-	public Set<Film> getFilms() {return films;}
+	public Set<Amplua> getAmpluas() {return ampluas;}
+	@OneToMany(mappedBy = "person")
+	public Set<PersonWithAmpluaForFilm> getFilms() {return films;}
 	
 }

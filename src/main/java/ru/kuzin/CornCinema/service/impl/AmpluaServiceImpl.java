@@ -1,4 +1,4 @@
-package ru.kuzin.CornCinema.service;
+package ru.kuzin.CornCinema.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ru.kuzin.CornCinema.dao.AmpluaRepository;
-import ru.kuzin.CornCinema.entityView.AmpluaView;
+import ru.kuzin.CornCinema.entityView.ampluaView.AmpluaView;
 import ru.kuzin.CornCinema.models.Amplua;
+import ru.kuzin.CornCinema.service.AmpluaService;
 
 @Service
 public class AmpluaServiceImpl implements AmpluaService {
@@ -21,8 +22,7 @@ public class AmpluaServiceImpl implements AmpluaService {
 	}
 
 	@Override
-	public List<AmpluaView> getAllAmpluaView() {
-		ampluaRepository.findAll();
+	public List<AmpluaView> getAllAmplua() {
 		return ampluaRepository.getAllAmpluaView();
 	}
 

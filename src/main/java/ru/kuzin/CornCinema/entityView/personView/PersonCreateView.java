@@ -1,6 +1,5 @@
-package ru.kuzin.CornCinema.entityView;
+package ru.kuzin.CornCinema.entityView.personView;
 
-import java.time.LocalDate;
 import com.blazebit.persistence.view.CreatableEntityView;
 import com.blazebit.persistence.view.EntityView;
 import com.blazebit.persistence.view.UpdatableEntityView;
@@ -10,10 +9,7 @@ import ru.kuzin.CornCinema.models.Person;
 @EntityView(Person.class)
 @CreatableEntityView
 @UpdatableEntityView
-public interface PersonFormView extends PersonView {
+public interface PersonCreateView extends PersonFormView {
 	
-	public void setName(String name);
-	public void setLastName(String lastName);
-	public void setDateOfBirth(LocalDate dateOfBirth);
 	
 }

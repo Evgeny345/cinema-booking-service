@@ -1,4 +1,4 @@
-package ru.kuzin.CornCinema.entityView;
+package ru.kuzin.CornCinema.entityView.personView;
 
 import com.blazebit.persistence.view.EntityView;
 import com.blazebit.persistence.view.IdMapping;

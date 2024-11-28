@@ -1,8 +1,10 @@
 package ru.kuzin.CornCinema.models;
 
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,14 +30,14 @@ public class Film {
 	private Integer id;
 	private String title;
 	private String description;
-	private String longDescription;
 	private LocalTime duration;
-	private String posterUrl;
 	private AgeRating ageRating;
+	private Boolean inRolling;
 	private Set<Genre> genres;
 	private Set<Country> countries;
-	private Set<Person> persons;
+	private Set<PersonWithAmpluaForFilm> persons = new HashSet<>();
 	private Set<ShowTime> showTimes;
+	private Set<FilmPoster> posters = new HashSet<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,14 +46,12 @@ public class Film {
 	public String getTitle() {return title;}
 	@Column(name = "description", length = 512)
 	public String getDescription() {return description;}
-	@Column(name = "long_description", length = 2048)
-	public String getLongDescription() {return longDescription;}
 	@Column(name = "duration", nullable = false)
 	public LocalTime getDuration() {return duration;}
-	@Column(name = "poster_url", length = 256)
-	public String getPosterUrl() {return posterUrl;}
 	@Column(name = "age_rating", nullable = false)
 	public AgeRating getAgeRating() {return ageRating;}
+	@Column(name = "in_rolling")
+	public Boolean getInRolling() {return inRolling;}
 	@ManyToMany
 	@JoinTable(name = "film_genre", 
 			   joinColumns = @JoinColumn(name = "film_id"),
@@ -62,12 +62,22 @@ public class Film {
 			   joinColumns = @JoinColumn(name = "film_id"),
 			   inverseJoinColumns = @JoinColumn(name = "country_id"))
 	public Set<Country> getCountries() {return countries;}
-	@ManyToMany
-	@JoinTable(name = "film_person", 
-			   joinColumns = @JoinColumn(name = "film_id"),
-			   inverseJoinColumns = @JoinColumn(name = "person_id"))
-	public Set<Person> getPersons() {return persons;}
+	@OneToMany(mappedBy = "film", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+	public Set<PersonWithAmpluaForFilm> getPersons() {return persons;}
 	@OneToMany(mappedBy = "film")
 	public Set<ShowTime> getShowTimes() {return showTimes;}
+	@OneToMany(mappedBy = "film", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+	public Set<FilmPoster> getPosters() {return posters;}
+	
+	public void addPoster(FilmPoster poster) {
+		posters.add(poster);
+		poster.setFilm(this);
+	}
+	
+	public void addPerson(Person person, Amplua amplua) {
+		PersonWithAmpluaForFilm personForFilm = new PersonWithAmpluaForFilm(this, person, amplua);
+		persons.add(personForFilm);
+		personForFilm.setFilm(this);
+	}
 
 }
