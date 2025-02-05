@@ -15,7 +15,7 @@ import jakarta.validation.Payload;
 @Documented
 public @interface NotEmptyDirectorsList {
 	
-	String message() default "Please select director";
+	String message() default "please select director";
     Class<?>[] groups() default {}; 
     Class<? extends Payload>[] payload() default {};
 

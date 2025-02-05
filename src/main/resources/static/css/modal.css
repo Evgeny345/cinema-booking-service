@@ -1,0 +1,16 @@
+:root {
+    --dark-yellow: rgb(193, 132, 27);
+    --dark-gray: rgb(33, 37, 41);
+}
+
+.custom-modal {
+    --bs-modal-border-color: var(--dark-yellow);
+    --bs-modal-border-width: .1rem;
+    --bs-modal-header-border-color: var(--dark-yellow);
+    --bs-modal-footer-border-color: var(--dark-yellow);
+}
+
+.custom-icons-button {
+    --bs-btn-color: var(--dark-gray);
+    --bs-btn-hover-color: var(--dark-yellow);
+}

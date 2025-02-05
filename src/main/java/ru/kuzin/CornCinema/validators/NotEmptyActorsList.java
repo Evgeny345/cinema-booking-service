@@ -15,7 +15,7 @@ import jakarta.validation.Payload;
 @Documented
 public @interface NotEmptyActorsList {
 	
-	String message() default "Please select actors";
+	String message() default "please select actors";
     Class<?>[] groups() default {}; 
     Class<? extends Payload>[] payload() default {};
 

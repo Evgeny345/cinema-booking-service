@@ -11,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,28 +26,29 @@ import lombok.Setter;
 @Table(name = "show_time")
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"prices"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ShowTime {
 	
+	@EqualsAndHashCode.Include
 	private Integer id;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private LocalDateTime startTime;
 	private Film film;
 	private Hall hall;
-	private Set<Price> prices = new HashSet<Price>();
+	private Set<Price> prices = new HashSet<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer getId() {return id;}
 	@Column(name = "start_time", nullable = false)
 	public LocalDateTime getStartTime() {return startTime;}
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "film_id", referencedColumnName = "id")
 	public Film getFilm() {return film;}
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "hall_id", referencedColumnName = "id")
 	public Hall getHall() {return hall;}
-	@OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "showTime", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	public Set<Price> getPrices() {return prices;}
 	
 	public void addPrice(SeatCategory category, BigDecimal price) {

@@ -1,18 +1,15 @@
-package ru.kuzin.CornCinema.dao;
+package ru.kuzin.CornCinema.service;
 
 import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import ru.kuzin.CornCinema.entityView.hallView.HallForCreateForm;
 import ru.kuzin.CornCinema.entityView.hallView.HallIdView;
 import ru.kuzin.CornCinema.entityView.hallView.HallView;
-import ru.kuzin.CornCinema.models.Hall;
 
-public interface HallRepository extends JpaRepository<Hall, Integer> {
+public interface HallService {
 	
-	HallIdView getHallIdViewById(Integer id);
-	HallView getHallViewById(Integer id);
+	HallView getHallScheme(Integer id);
+	Integer numberOfHalls();
 	List<HallView> getAllHallView();
 	List<HallForCreateForm> getAllHallForCreateForm();
 	List<HallIdView> getAllHallIdView();

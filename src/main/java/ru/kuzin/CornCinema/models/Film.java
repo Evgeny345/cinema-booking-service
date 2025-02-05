@@ -64,7 +64,7 @@ public class Film {
 	public Set<Country> getCountries() {return countries;}
 	@OneToMany(mappedBy = "film", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	public Set<PersonWithAmpluaForFilm> getPersons() {return persons;}
-	@OneToMany(mappedBy = "film")
+	@OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
 	public Set<ShowTime> getShowTimes() {return showTimes;}
 	@OneToMany(mappedBy = "film", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	public Set<FilmPoster> getPosters() {return posters;}

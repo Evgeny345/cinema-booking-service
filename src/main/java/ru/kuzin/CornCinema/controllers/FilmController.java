@@ -1,13 +1,5 @@
 package ru.kuzin.CornCinema.controllers;
 
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.expression.Lists;
-import org.thymeleaf.expression.Sets;
 
 import jakarta.validation.Valid;
 import ru.kuzin.CornCinema.entityView.filmView.FilmFormViewImpl;
-import ru.kuzin.CornCinema.entityView.personView.PersonForCreateFilmImpl;
 import ru.kuzin.CornCinema.entityView.personView.PersonFormViewImpl;
-import ru.kuzin.CornCinema.entityView.personView.PersonFullNameView;
-import ru.kuzin.CornCinema.entityView.personView.PersonIdView;
-import ru.kuzin.CornCinema.entityView.personView.PersonWithAmpluaView;
-import ru.kuzin.CornCinema.models.Test1;
 import ru.kuzin.CornCinema.service.AmpluaService;
 import ru.kuzin.CornCinema.service.CountryService;
 import ru.kuzin.CornCinema.service.FilmService;
@@ -82,21 +67,10 @@ public class FilmController {
 	public String getFilmForm(Model model) {
 		model.addAttribute("countryList", countryService.getAllProducingCountries());
 		model.addAttribute("genreList", genreService.getAllGenres());
-		model.addAttribute("directorsList", personService.getAllDirectors());
-		model.addAttribute("actorsList", personService.getAllActors());
-		if(!model.containsAttribute("film"))
-			model.addAttribute("film", filmService.getFilmForm());
-		return "films/filmForm";
-	}
-	
-	@GetMapping("/filmForm1")
-	public String getFilmForm1(Model model) {
-		model.addAttribute("countryList", countryService.getAllProducingCountries());
-		model.addAttribute("genreList", genreService.getAllGenres());
 		model.addAttribute("mapOfPersonsByAmplua", personService.getAllPersonsByAmplua());
 		if(!model.containsAttribute("film"))
 			model.addAttribute("film", filmService.getFilmForm());
-		return "films/filmForm1";
+		return "films/filmForm";
 	}
 	
 	@PostMapping("/createPerson")
@@ -106,8 +80,8 @@ public class FilmController {
 			redirectAttributes.addFlashAttribute("person", person);
 			return "redirect:/films/personForm";
 		}
-		personService.savePerson(person);
-		return "redirect:/films/filmForm1";
+		personService.createPerson(person);
+		return "redirect:/films/filmForm";
 	}
 	
 	@PostMapping("/createFilm")
@@ -118,19 +92,7 @@ public class FilmController {
 			redirectAttributes.addFlashAttribute("film", film);
 			return "redirect:/films/filmForm";
 		}
-		filmService.saveFilm(film, uploadingFiles);
-		return "test";
-	}
-	
-	@PostMapping("/createFilm1")
-	public String createFilm1(@ModelAttribute("film") @Valid  FilmFormViewImpl film, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-			 				  @RequestParam(name="posterImg", required=false) MultipartFile[] uploadingFiles) {
-		if(bindingResult.hasErrors()) {
-			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.film", bindingResult);
-			redirectAttributes.addFlashAttribute("film", film);
-			return "redirect:/films/filmForm1";
-		}
-		filmService.saveFilm(film, uploadingFiles);
+		filmService.createFilm(film, uploadingFiles);
 		return "test";
 	}
 

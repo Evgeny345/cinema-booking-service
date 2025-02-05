@@ -61,7 +61,7 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	@Transactional
-	public void savePerson(PersonFormView form) {
+	public void createPerson(PersonFormView form) {
 		PersonCreateView person = entityViewManager.convert(form, PersonCreateView.class, ConvertOption.CREATE_NEW);
 		entityViewManager.save(entityManager, person);
 	}

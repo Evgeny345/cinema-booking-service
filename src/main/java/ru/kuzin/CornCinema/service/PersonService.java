@@ -13,7 +13,7 @@ import ru.kuzin.CornCinema.models.Person;
 public interface PersonService {
 	
 	PersonFormView getPersonForm();
-	void savePerson(PersonFormView personFormView);
+	void createPerson(PersonFormView personFormView);
 	Person getPersonForm1();
 	List<PersonFullNameView> getAllActors();
 	List<PersonFullNameView> getAllDirectors();

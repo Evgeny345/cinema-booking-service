@@ -2,9 +2,9 @@ package ru.kuzin.CornCinema.models;
 
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,7 +30,7 @@ public class SeatCategory {
 	public Integer getId() {return id;}
 	@Column(name = "category_of_seat_name", nullable = false, length = 32)
 	public String getName() {return name;}
-	@OneToMany(mappedBy = "seatCategory", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "seatCategory", fetch = FetchType.LAZY)
 	public Set<Price> getPrices() {return prices;}
 
 }

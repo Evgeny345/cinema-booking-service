@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>show time form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="/css/hall.css" rel="stylesheet">
+	<link href="/css/modal.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+    <link href="/css/datepicker.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div class="container">
+    <div class="row justify-content-center my-5">
+    <div class="card border-yellow w-75 px-0">
+        <div class="card-header border-yellow">
+            <p class="text-center text-dark text-opacity-75 h2 mb-2 mx-1 mx-md-4 mt-4">Create show time</p>
+        </div>
+        <div class="card-body mx-4">
+            <div class="row d-none d-lg-block">    
+                <div class="col-lg-12 px-0">
+                    <div class="d-flex border-bottom border-schedule">
+                        <div class="fw-bold" th:each="hour: ${timeLine}" th:inline="text" th:style=" 'width:' + ${100*1.0/timeLine.size()} + '%;'" >[[${hour >= 10}? ${hour}: '0' + ${hour}]]<sup class="fw-normal">00</sup></div>
+                    </div>
+                </div>    
+            </div>
+            <div class="container px-0 day" th:classappend="${showTimesList.key==start}? 'active': ''"
+								   	   		th:each="showTimesList: ${showTimesByDate}"
+								   	   		th:id=" 'day' + ${showTimesList.key.getDayOfMonth()}">
+			<div th:each="showTime: ${showTimesList.value}">
+    		<!-- Модальное окно -->
+    		<div class="modal fade custom-modal" th:id=" 'exampleModal' + ${showTime.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        		<div class="modal-dialog modal-sm">
+            		<div class="modal-content">
+                		<div class="modal-header">
+                    		<h1 th:text="${showTime.filmTitle}" class="modal-title fs-4" id="exampleModalLabel">Titanic</h1>
+                    		<button type="button" class="btn custom-icons-button btn-lg" data-bs-dismiss="modal" aria-label="Закрыть">
+                        	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            	<path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                            	<path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                        	</svg>
+                    		</button>
+                		</div>
+                		<div class="modal-body">
+                    		<p class="fs-6">
+                        		<span class="fw-semibold">Duration: </span>
+                        		<span class="fw-semibold text-dark text-opacity-75" th:text="${showTime.filmDuration}">1:45</span>
+                    		</p>
+                    		<p class="fs-6">
+                        		<span class="fw-semibold">Start date: </span>
+                        		<span class="fw-semibold text-dark text-opacity-75" th:text="${showTime.startDay}">2023.05.05</span>
+                    		</p>
+                    		<p class="fs-6">
+                        		<span class="fw-semibold">Start time: </span>
+                        		<span class="fw-semibold text-dark text-opacity-75" th:text="${showTime.startTime.toLocalTime()}">10:00</span>
+                    		</p>
+                    		<p class="fs-6">
+                        		<span class="fw-semibold">End time: </span>
+                        		<span class="fw-semibold text-dark text-opacity-75" th:text="${showTime.endTime.toLocalTime()}">12:00</span>
+                    		</p>
+                		</div>
+                		<div class="modal-footer">
+                    		<button class="btn custom-icons-button px-0" type="button">
+                        		<div class="nav-link d-flex flex-column align-items-center">
+                            		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                	<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            		</svg><span class="small">edit</span>
+                        		</div>
+                    		</button>
+                    		<a class="btn custom-icons-button px-0" role="button" th:href="@{/showTimes/delete/{showTimeId}(showTimeId=${showTime.id})}">
+                        		<div class="nav-link d-flex flex-column align-items-center">
+                            		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                	<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                	<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            		</svg><span class="small">delete</span>
+                        		</div>
+                    		</a>
+                		</div>
+            		</div>
+        		</div>
+    		</div>
+    		</div>
+            <div class="row mb-2 d-none d-lg-block">
+                <div class="col-lg-12 px-0" style="background-color: #fbf1d0; position: relative;">
+                    <div class="d-flex border-bottom border-schedule" style="height: 40vh;">    
+                        <div class="border-start border-yellow shift" th:each="hour: ${timeLine}" th:style=" 'width:' + ${100*1.0/timeLine.size()} + '%;'">
+                        	<div class="d-flex flex-column" style="height: 100%;">
+                        		<div class="col"></div>
+                            	<div class="col">
+                            		<a role="button" th:each="film: ${showTimesList.value}" th:if="${film.startTime.getHour()==hour} and ${film.hallId==2}" 
+                				 		class="hall one" th:text="${film.startTime.toLocalTime()}" data-th-attr="data-film-time-start=${film.startTime.getMinute()}"
+                				 		data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${film.id}">                				
+                					</a>
+                            	</div>
+                            	<div class="col">
+                            		<a role="button" th:each="film: ${showTimesList.value}" th:if="${film.startTime.getHour()==hour} and ${film.hallId==3}" 
+                				 		class="hall two" th:text="${film.startTime.toLocalTime()}" data-th-attr="data-film-time-start=${film.startTime.getMinute()}"
+                				 		data-bs-toggle="modal" th:data-bs-target="'#exampleModal' + ${film.id}">
+                					</a>
+                            	</div>
+                            	<div class="col"></div>
+                        	</div>
+                        </div>               
+                    </div> 
+                </div>    
+            </div>
+            </div>
+            <form id="myForm" th:method="post" th:action="@{/showTimes/createShowTime}" th:object="${showTime}">
+            <div class="row mb-2">
+                <div class="col-lg-4 ps-0">
+                    <div class="row mb-2">
+                        <p class="mb-2 fw-semibold text-dark text-opacity-75">Select date</p>
+                        <label class="mb-2 ui-datepicker " for="datepicker"></label>
+                        <div id="datepicker"></div>
+                    </div>
+                </div>
+                <div class="col-lg-8 pe-0">
+                    <div class="row">
+                        <div class="d-grid gap-2 mb-2">
+                            <label class="fw-semibold text-dark text-opacity-75" for="availableTimeForHall">Select start of show time</label>
+                            <select id="availableTimeForHall" class="form-select" name="selectTime" onfocus="this.size=timeListSize;"
+                                                                           							onblur="this.size=0;"
+                                                                           							onchange="this.size=1; this.blur()"></select>
+                        </div>
+                        <input type="hidden" name="dateTime" th:field="*{startTime}" id="dateTime">
+                        <div class="d-grid gap-2 mb-2">
+                            <label class="fw-semibold text-dark text-opacity-75" for="film">Select film</label>
+                            <select class="form-select" th:field="*{film}" onfocus="this.size=filmSize;"
+                                                                           onblur="this.size=0;"
+                                                                           onchange="this.size=1; this.blur()">
+  								<option th:each="filmInfo: ${availableTimeForCreateShowTime}" th:value="${filmInfo.id}" th:text="${filmInfo.title}">One</option>
+							</select>   
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <p class="fw-semibold text-dark text-opacity-75 text-center mb-1">Select hall</p>
+                            <div class="d-grid gap-2 mb-3" th:each="hall, itemStat: ${hallsList}">
+                                <input type="radio" class="btn-check" th:checked="${showTime.hall == hall} ? 'checked'" th:id=" 'hall' + ${hall.id}" th:field="*{hall}" th:value="${hall.id}">
+                                <label class="btn" th:classappend=" ' btn-custom-outline-' + ${hall.getShortName()}" th:for=" 'hall' + ${hall.id}" th:text="${hall.name}">Hall 1</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <p class="fw-semibold text-dark text-opacity-75 text-center mb-1">Select price</p>
+                            <div class="col" th:each="tp, itemStat : ${showTime.listTicketPrice}">
+                            	<div class="input-group mt-2 mb-3">
+                                	<span class="input-group-text" th:text="${tp.seatCategoryName}"></span>
+                                	<input type="number" min="0" step="50" class="form-control" th:field="*{listTicketPrice[__${itemStat.index}__].price}"/>
+                            		
+                            		<input th:type="hidden" th:field="*{listTicketPrice[__${itemStat.index}__].seatCategoryId}" th:value="${showTime.listTicketPrice[__${itemStat.index}__].seatCategoryId}">
+                            		<input th:type="hidden" th:field="*{listTicketPrice[__${itemStat.index}__].seatCategoryName}" th:value="${showTime.listTicketPrice[__${itemStat.index}__].seatCategoryName}">
+                            	</div>                     
+                            </div>
+                            
+                        </div>
+                        <div th:each="tp, itemStat : ${showTime.listTicketPrice}">
+                            <p class="text-end fs-6 text-danger my-0" th:each="err : ${#fields.errors('listTicketPrice[__${itemStat.index}__].price')}" th:text=" 'Price for seat category ' + ${tp.seatCategoryName} + ' ' + ${err}">Name error</p>
+                        </div>
+                    </div>    
+                </div>    
+            </div>
+            <div class="row mb-2">
+                <div class="d-grid gap-2 px-0">
+                    <button class="btn btn-custom-warning" type="submit">Create</button>
+                </div>
+            </div>
+          	</form>
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+	function defineAvailableDateTime(film) {
+		$.each(showTime, function(key, value){
+			if(value['id'] === +film) {
+				availableDateTime = value['availableTimeForShowTimeCreate'];
+			}
+		});
+	}
+</script>
+<script th:inline="javascript">	
+	function createDataList(availableTimeForHall){
+		$('#availableTimeForHall').empty();
+		let hallId = $('input[name="hall"]:checked').val();
+		$.each(availableTimeForHall, function(key, value) {
+			if(key === hallId) {
+				$.each(value, function(index, val) {
+					$('#availableTimeForHall').append($('<option/>', { 
+				        value: val,
+				        text : val.slice(0, -3) 
+				    }));
+				});
+				
+				let startDateTime = /*[[${showTime.startTime}]]*/ null;
+				let startTime;
+				if(startDateTime != null) {
+					startTime = startDateTime.substring(11, 19);
+					$("#availableTimeForHall option[value='" + startTime + "']").prop('selected', true);
+				} else {
+					$('#availableTimeForHall option:first').prop('selected', true);
+					startTime = $('select[name="selectTime"]').val();
+				}
+				
+				showTimeDateTime = startDate+'T'+startTime;
+				$("#dateTime").val(showTimeDateTime);
+			}
+			timeListSize = $('#availableTimeForHall option').size();
+		});
+	}
+</script>
+<script>
+	function defineTimeByDate() {
+		let dateFromDatepicker = $( "#datepicker" ).datepicker( "getDate" );
+		
+		// Data of format YYYY-mm-dd
+		let currentFormatDate;
+		
+		//Dates from datepicker aligns from server 
+		if (jQuery.type( dateFromDatepicker ) === "null") {
+			currentFormatDate = start;
+		} else {
+			let day = dateFromDatepicker.getDate();
+				if (day < 10) day = '0' + day;
+			
+			let month = dateFromDatepicker.getMonth() + 1;
+				if (month < 10) month = '0' + month;
+
+			let year = dateFromDatepicker.getFullYear();
+			
+			currentFormatDate = year + '-' + month + '-' + day;
+		}
+		$.each(availableDateTime, function(key, data){			
+			if(key === currentFormatDate) {
+				startDate = key;
+				availableTimeForHall = data;
+				createDataList(availableTimeForHall);
+				return false;
+			}
+		});
+	}
+</script>
+<script th:inline="javascript">
+	let showTimeStartDateTime = /*[[${showTime.startTime}]]*/ null;
+	const start = /*[[${start}]]*/ null;
+	const end = /*[[${end}]]*/ null;
+	let defaultDate;
+	if(showTimeStartDateTime != null) {
+		defaultDate = showTimeStartDateTime.substring(0, 10);
+		$('.day').removeClass('active')
+		var dayId = showTimeStartDateTime.substring(9, 10);
+		$('#day'+dayId).addClass('active')
+	} else {
+		defaultDate = start;
+	}
+	$(function(){
+	$("#datepicker").datepicker({
+		weekHeader: 'Не',
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        defaultDate: defaultDate,
+		minDate: start,
+		maxDate: end,
+		onSelect: function(dateText, inst) {
+			$('.day').removeClass('active')
+			var dayId = $( "#datepicker" ).datepicker( "getDate" ).getDate();
+			$('#day'+dayId).addClass('active')
+			$.each(availableDateTime, function(key, data){
+				if(key === dateText) {
+					startDate = dateText;
+					availableTimeForHall = data;
+					createDataList(availableTimeForHall);
+					setDefaultSelected();
+				}
+			});
+        	}
+		});
+	});
+</script>
+<script th:inline="javascript">
+	let firstHallId = $('input[name="hall"]:checked').val();
+	if (typeof firstHallId === "undefined") {
+		firstHallId = /*[[${hallsList[0].id}]]*/ null;
+	}
+	$("#hall"+firstHallId).prop("checked", true);
+</script>
+<script th:inline="javascript">
+	let filmId = $('select[name="film"]').val();
+	let availableDateTime;
+	let availableTimeForHall;
+	let startDate;
+	let startTime;
+	let showTimeDateTime;
+	let timeListSize;
+	const showTime = /*[[${availableTimeForCreateShowTime}]]*/ null;
+	let filmSize = $('#film option').size();
+	defineAvailableDateTime(filmId);
+	defineTimeByDate();
+</script>
+<script>
+	$('select[name="film"]').change(function(){
+		filmId = $(this).val();
+		defineAvailableDateTime(filmId);
+		defineTimeByDate();
+	})
+</script>
+<script>
+	$(document).on( "change", "input[name=hall]", function() {
+		createDataList(availableTimeForHall);
+		setDefaultSelected();
+	});
+</script>
+<script>
+	function setDefaultSelected() {
+		$('#availableTimeForHall option:first').prop('selected', true);
+		startTime = $('select[name="selectTime"]').val();
+		showTimeDateTime = startDate+'T'+startTime;
+		$("#dateTime").val(showTimeDateTime);
+	}
+</script>
+<script>
+	$('select[name="selectTime"]').change(function() {
+		showTimeDateTime = $("#dateTime").val();
+		startTime = $("#availableTimeForHall").val();
+		startDate = showTimeDateTime.substring(0, 10);
+		showTimeDateTime = startDate+'T'+startTime;
+		$("#dateTime").val(showTimeDateTime);
+	})
+</script>
+<script>
+let hourWidthInPx = $(".hall").css("width").replace("px", "");
+$(".hall").each(function(){
+	let minutesOfFilmDuration = $(this).attr("data-film-time-start");
+	if (minutesOfFilmDuration == 0) {
+		$(this).css("margin-left", '.2em');
+	} else {
+		let minutesInPercents = minutesOfFilmDuration/60*100;
+		let marginBasedOnMinutes = hourWidthInPx*minutesInPercents/100 + 'px';
+		$(this).css("margin-left", marginBasedOnMinutes);
+	}
+});
+</script>
+</body>
