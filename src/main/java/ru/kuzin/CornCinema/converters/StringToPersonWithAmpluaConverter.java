@@ -10,7 +10,7 @@ import ru.kuzin.CornCinema.service.PersonService;
 @Component
 public class StringToPersonWithAmpluaConverter implements Converter<String, PersonWithAmpluaView> {
 
-private PersonService personService;
+	private PersonService personService;
 	
 	@Autowired
 	public void setPersonService(PersonService personService) {

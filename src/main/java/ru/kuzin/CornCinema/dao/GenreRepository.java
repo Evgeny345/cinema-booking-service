@@ -11,6 +11,9 @@ import ru.kuzin.CornCinema.models.Genre;
 public interface GenreRepository extends JpaRepository<Genre, Integer> {
 	
 	List<GenreView> getAllGenreView();
+	
+	List<GenreIdView> getAllGenreIdView();
+	
 	GenreIdView getGenreIdViewById(Integer id);
 
 }

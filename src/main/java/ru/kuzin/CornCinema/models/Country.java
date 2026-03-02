@@ -11,18 +11,22 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "country")
 @Setter
+@RequiredArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Country {
 	
 	private Integer id;
+	@NonNull
 	private String name;
-	private Set<Film> films;
+	private Set<Movie> movies;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +34,6 @@ public class Country {
 	@Column(name = "country_name", nullable = false, length = 32)
 	public String getName() {return name;}
 	@ManyToMany(mappedBy = "countries")
-	public Set<Film> getFilms() {return films;}
+	public Set<Movie> getMovies() {return movies;}
 
 }

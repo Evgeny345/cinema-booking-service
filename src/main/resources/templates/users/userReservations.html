@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div th:each="ticketsByShowTime : ${reservationsMap}">
+	<div class="modal fade" th:id=" 'qrCodeModal' + ${ticketsByShowTime.key}" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="row align-item-center">
+						<div class="col-2"></div>
+						<div class="col">
+							<img th:src="@{${'/imgQR/' + ticketsByShowTime.value[0].userId + '/' + #temporals.format(ticketsByShowTime.key, 'yyyy-MM-dd-HH-mm') + '/' + #temporals.format(ticketsByShowTime.key, 'yyyy-MM-dd-HH-mm') + '.png'}}"
+								 class="img-fluid" style="max-width: 300px;" alt="...">
+						</div>
+					</div>
+					<div class="row text-center mb-3">
+						<h3 class="fs-2 fw-semibold" 
+							th:text="${ticketsByShowTime.value[0].movieTitle + ' ' + ticketsByShowTime.value[0].ageRating.name}">Citizine Kane (12+)</h3>
+					</div>
+					<div class="d-grid gap-2 col-4 mx-auto">
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+<div class="container-fluid">
+	<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+	<div th:replace="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+	<div class="container">
+		<p th:unless="${#maps.isEmpty(reservationsMap)}" class="d-none d-lg-block text-start fs-1 text-secondary-emphasis fw-semibold my-4">Reservations</p>
+		<div th:if="${#maps.isEmpty(reservationsMap)}">
+			<p class="d-none d-lg-block text-start fs-1 text-secondary-emphasis fw-semibold my-4" style="height: 10em;">Sorry, you don’t have any available reservations</p>
+		</div>
+		<div class="row row-cols-sm-1 row-cols-xl-2 mb-3">
+			<div class="col-6" th:each="ticketsByShowTime : ${reservationsMap}">
+				<div class="card border border-0 my-3" style="background-color: #eee;">
+					<div class="row g-0">
+						<div class="col-lg-6 col-4">
+              				<img th:src="${#strings.isEmpty(ticketsByShowTime.value[0].moviePosterLocation)} ? 
+              							@{/img/corn-bg-yellow472.jpg} : 
+              							@{${'/imgDB/' + #strings.replace(ticketsByShowTime.value[0].movieTitle, '&#32', '') + '/' + ticketsByShowTime.value[0].moviePosterLocation}}" class="img-fluid h-100" style="max-height: 472px;" alt="...">
+            			</div>
+            			<div class="col-lg-6 col-8">
+            				<div class="card-body">
+            					<h3 class="card-title fw-semibold mb-2 mb-lg-5" 
+            						th:text="${ticketsByShowTime.value[0].movieTitle + ' ' + ticketsByShowTime.value[0].ageRating.name}">Citizine Kane (12+)</h3>
+            					<p class="fs-5 fw-medium mb-1" style="color: rgb(25, 25, 111);">Show time number: 
+            						<span class="text-secondary-emphasis fs-5" th:text="${ticketsByShowTime.value[0].showTimeId}">0000000024</span>
+            					</p>
+            					<p class="fs-5 fw-medium mb-1" style="color: rgb(25, 25, 111);">Amount of tickets: 
+            						<span class="text-secondary-emphasis fs-5" th:text="${#lists.size(ticketsByShowTime.value)}">2</span>
+                    			</p>
+                    			<p class="fs-5 fw-medium mb-1" style="color: rgb(25, 25, 111);">Hall: 
+                    				<span class="text-secondary-emphasis fs-5" th:text="${ticketsByShowTime.value[0].hallName}">Green hall</span>
+                    			</p>
+                    			<p class="fs-5 fw-medium mb-1" style="color: rgb(25, 25, 111);">Row/Seat: 
+                    				<span class="text-secondary-emphasis fs-5" th:each="ticket, itemStat: ${ticketsByShowTime.value}"
+                    					th:text="${#lists.size(ticketsByShowTime.value)} &gt; 1 ?
+                    								(${itemStat.last}?
+                    							${ticket.rowNumber + '/' + ticket.seatNumber}:
+                    								${ticket.rowNumber + '/' + ticket.seatNumber + ', '}) :
+                    							${ticket.rowNumber + '/' + ticket.seatNumber}">1/7, 1/9</span>
+                    			</p>
+                    			<p class="fs-5 fw-medium mb-1" style="color: rgb(25, 25, 111);">Start time: 
+                    				<span class="text-secondary-emphasis fs-5" 
+                    					th:text="${#temporals.format(ticketsByShowTime.value[0].startTime, 'EEEE, dd MMMM', new java.util.Locale('en'))}"> 20:05 28.10.2025</span>
+                    			</p>
+                    			<p class="fs-5 fw-medium mb-2 mb-lg-5" style="color: rgb(25, 25, 111);">Total amount: 
+                    				<span class="text-secondary-emphasis fw-medium fs-5" th:text="${#aggregates.sum(ticketsByShowTime.value.![price])}">600 &#x20bd</span>
+                    			</p>
+                    			<form th:method="post" th:action="@{/users/chancelReservation}" id="dataForChancelReservation">
+                    				<input type="hidden" name="reservationDate" th:value="${ticketsByShowTime.key}">
+                  					<input type="hidden" name="userId" th:value="${ticketsByShowTime.value[0].userId}">
+                    			</form>
+                    			<div class="d-grid gap-2 d-md-flex mt-5 justify-content-start d-none d-lg-block">
+                  					<button class="btn btn-custom-outline-blue" type="button" data-bs-toggle="modal" th:data-bs-target=" '#qrCodeModal' + ${ticketsByShowTime.key}">Qr code</button>
+                  					<button class="btn btn-custom-outline-green" type="submit" form="dataForChancelReservation">Cancel reservation</button>
+                				</div>
+                				<div class="d-grid gap-2 d-md-flex justify-content-start d-none d-sm-block d-md-none ">
+                  					<button class="btn btn-sm btn-custom-outline-blue" type="button" data-bs-toggle="modal" th:data-bs-target=" '#qrCodeModal' + ${ticketsByShowTime.key}">Qr code</button>
+                  					<button class="btn btn-sm btn-custom-outline-green" form="dataForChancelReservation" type="submit">Cancel reservation</button>
+                				</div>
+            				</div>
+            			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:insert="~{movies/allMoviesInPlaying :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+$(".img-fluid.h-100").each(function(){
+	let posterUrl = $(this).attr("src");
+	$(this).load(posterUrl, function(response, status) {
+        if (status !== 'success') {
+        	$(this).attr("src","http://localhost:8080/img/corn-bg-yellow472.jpg");
+        }
+    });
+});
+</script>
+</body>

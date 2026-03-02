@@ -19,6 +19,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import ru.kuzin.CornCinema.models.Amplua;
 import ru.kuzin.CornCinema.models.Person;
+import ru.kuzin.CornCinema.validators.NotEmptyAmpluasList;
 
 @StaticImplementation(PersonFormView.class)
 public class PersonFormViewImpl implements PersonFormView, EntityViewProxy {
@@ -36,6 +37,7 @@ public class PersonFormViewImpl implements PersonFormView, EntityViewProxy {
 	@NotNull(message = "must not be empty")
 	@DateTimeFormat(iso = ISO.DATE)
 	private LocalDate dateOfBirth;
+	@NotEmptyAmpluasList
 	private Set<Amplua> ampluas = new HashSet<>();
 	
 	public PersonFormViewImpl() {

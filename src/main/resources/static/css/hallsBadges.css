@@ -1,0 +1,87 @@
+.hall {  
+    width: 4.2em;
+    text-align: center;
+    color: #fff;
+    line-height: 2em;
+    border-radius: .2em;
+    font-family: sans-serif;
+    padding: 1px;
+    font-size: .75em;
+    text-decoration: none;   
+}
+
+div.hall {
+	position: relative;
+}
+
+a.hall {
+	position: absolute;
+}
+
+a.hall:hover {
+	color: #e3d9d9;	
+}
+
+.hall.blue {
+	
+	background-color: #234aaef8;
+	box-shadow: 3px 4px 4px 0px rgba(0,0,0,0.75);
+}
+
+.hall.blue::before {
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -.3em;
+    bottom: .6em;
+    border-top: .45em solid transparent;
+	border-bottom: .45em solid transparent;
+	border-right: .45em solid #234aaef8;
+}
+
+.hall.green {
+	
+	background-color: #219933f8;
+	box-shadow: 3px 4px 4px 0px rgba(0,0,0,0.75);
+}
+
+.hall.green::before {
+	content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -.3em;
+    bottom: .6em;
+    border-top: .45em solid transparent;
+	border-bottom: .45em solid transparent;
+	border-right: .45em solid #219933f8;
+}
+
+.hall.blue.disabled, .hall.green.disabled {
+    background-color: #76776ef8;
+    pointer-events: none;
+    box-shadow: initial;
+}
+
+.hall.blue.disabled::before, .hall.green.disabled::before {
+    border-right: .45em solid #76776ef8;
+}
+
+.hall.small-blue {
+	position: relative;
+	background-color: #234aaef8;
+	box-shadow: 3px 4px 4px 0px rgba(0,0,0,0.75);
+}
+
+.hall.small-green {
+	position: relative;
+	background-color: #219933f8;
+	box-shadow: 3px 4px 4px 0px rgba(0,0,0,0.75);
+}
+
+.hall.small-blue.disabled, .hall.small-green.disabled {
+	background-color: #76776ef8;
+    pointer-events: none;
+    box-shadow: initial;
+}

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${film.title}">schedule</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="/css/hallsBadges.css" rel="stylesheet">
+	<link href="/css/schedule.css" rel="stylesheet">
+	<link href="/css/datepicker.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+	<div class="container-fluid">
+		<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+		<div th:replace="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+		<div class="container">
+			<div class="row justify-content-center mb-3">
+				<div class="col-12 mt-3">
+					<p class="d-none d-lg-block text-start fs-1 text-secondary-emphasis fw-semibold my-4">Movie description</p>
+					<div class="row justify-content-center align-items-center mx-1">
+						<div class="col-lg-4 col-8 text-center">
+							<img th:src="${#strings.isEmpty(film.poster)} ? @{/img/corn-bg-blue.jpg} : @{${'/imgDB/' + #strings.replace(film.title, '&#32', '') + '/' + film.poster}}"
+								 class="img-fluid" alt="...">
+						</div>
+						<div class="col-lg-1"></div>
+						<div class="col-lg-7 col-12">
+							<div class="row">
+								<p class="text-sm-center text-lg-start text-secondary-emphasis fw-semibold fs-2 mb-3"
+									th:text="${film.title}">Citizen Kane</p>
+							</div>
+							<div
+								class="row justify-content-start border-bottom border-schedule mb-3">
+								<div class="col-3">
+									<p class="text-start fs-4 fw-semibold mb-0"
+										style="color: rgba(193, 132, 27, 1);"
+										th:each="amplua : ${film.personsByAmplua}"
+										th:if="${#strings.equalsIgnoreCase(amplua.key, 'director')}"
+										th:text="${#sets.size(amplua.value)} &gt; 1 ? 'Directors:' : 'Director:'">Director:</p>
+								</div>
+								<div class="col-9">
+									<p th:each="amplua : ${film.personsByAmplua}"
+										th:if="${#strings.equalsIgnoreCase(amplua.key, 'director')}"
+										th:text="${#strings.setJoin(amplua.value.![fullName],', ')}"
+										class="text-start fs-4 text-secondary-emphasis mb-0">Robin Shultz</p>
+								</div>
+							</div>
+							<div
+								class="row justify-content-start border-bottom border-schedule mb-3">
+								<div class="col-3">
+									<p class="text-start fs-4 fw-semibold mb-0" style="color: rgba(193, 132, 27, 1);">Genre:</p>
+								</div>
+								<div class="col-9">
+									<p class="text-start fs-4 text-secondary-emphasis mb-0"
+										th:text="${#strings.setJoin(film.genres,', ')}">Action, melodrama, comedy, horror</p>
+								</div>
+							</div>
+							<div
+								class="row justify-content-start border-bottom border-schedule mb-3">
+								<div class="col-3">
+									<p class="text-start fs-4 fw-semibold mb-0"
+										style="color: rgba(193, 132, 27, 1);">Country:</p>
+								</div>
+								<div class="col-9">
+									<p class="text-start fs-4 text-secondary-emphasis mb-0"
+										th:text="${#strings.setJoin(film.countries,', ')}">United states</p>
+								</div>
+							</div>
+							<div
+								class="row justify-content-start border-bottom border-schedule mb-3">
+								<div class="col-3">
+									<p class="text-start fs-4 fw-semibold mb-0" style="color: rgba(193, 132, 27, 1);">Actors:</p>
+								</div>
+								<div class="col-9">
+									<p th:each="amplua : ${film.personsByAmplua}"
+										th:if="${#strings.equalsIgnoreCase(amplua.key, 'actor')}"
+										th:text="${#strings.setJoin(amplua.value.![fullName],', ')}"
+										class="text-start text-secondary-emphasis fs-4 mb-0">Robin Shultz</p>
+								</div>
+							</div>
+							<div
+								class="row justify-content-start border-bottom border-schedule mb-3">
+								<div class="col-3">
+									<p class="text-start fs-4 fw-semibold mb-0" style="color: rgba(193, 132, 27, 1);">Age rating:</p>
+								</div>
+								<div class="col-9">
+									<p class="text-start fs-4 text-secondary-emphasis mb-0" th:text="${film.ageRating.name}">12+</p>
+								</div>
+							</div>
+							<div
+								class="row justify-content-start border-bottom border-schedule mb-3">
+								<div class="col-3">
+									<p class="text-start fs-4 fw-semibold mb-0" style="color: rgba(193, 132, 27, 1);">Duration:</p>
+								</div>
+								<div class="col-9">
+									<p class="text-start fs-4 text-secondary-emphasis mb-0" th:text="${film.duration}">1h 30m</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="text-start fs-1 text-secondary-emphasis fw-semibold my-4 d-none d-lg-block">Show times</p>
+				</div>
+			</div>
+
+			<div class="row justify-content-center px-1 mb-3">
+				<div class="col-12 d-block d-lg-none">
+					<div class="d-grid gap-2 mx-auto">
+						<div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+							<button type="button" th:each="date, itemStat: ${datesList}"
+									class="btn btn-custom-outline-warning"
+									th:classappend="${itemStat.index==0}? 'active'"
+									th:text="${date}" th:id="${date}">2023-5-5</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 d-none d-lg-block">
+					<div class="d-grid gap-2 mx-auto">
+						<div class="btn-group btn-group-lg" role="group"
+							 aria-label="Basic outlined example">
+							<button type="button" th:each="date, itemStat: ${datesList}"
+									th:text="${date}" th:id="${date}"
+									class="btn btn-custom-outline-warning"
+									th:classappend="${itemStat.index==0}? 'active'">2023-5-5</button>
+							<input type="hidden" class="form-control" id="datepicker">
+							<label class="btn btn-custom-outline-warning" for="datepicker">
+								<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-calendar2-date" viewBox="0 0 16 16">
+              						<path d="M6.445 12.688V7.354h-.633A12.6 12.6 0 0 0 4.5 8.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z" />
+              						<path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z" />
+              						<path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z" />
+            					</svg>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row justify-content-center mx-1 d-block d-lg-none">
+				<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 gy-2 d-none"
+					th:each="showTimeByDate: ${film.showTimesByDate}"
+					data-th-attr="rolling-day=${showTimeByDate.key}">
+					<a class="col ms-2 hall"
+						th:classappend=" 'small-' + ${showTime.getShortHallName()}"
+						th:each="showTime: ${showTimeByDate.value}"
+						th:href="@{/showTimes/showTime/{showTimeId}(showTimeId=${showTime.id})}"
+						th:text="${showTime.startTime.toLocalTime()}"
+						data-th-attr="show-time-start=${showTime.startTime}">13:10</a>
+				</div>
+			</div>
+			<div class="row justify-content-center mx-1">
+				<div class="d-none d-lg-block col-12 px-0">
+					<div class="d-flex border-bottom border-schedule">
+						<div class="fw-semibold" th:each="hour: ${timeLine}" th:inline="text" 
+							 th:style=" 'width:' + ${100*1.0/timeLine.size()} + '%;'">
+							 [[${hour >= 10}? ${hour}: '0' + ${hour}]]<sup class="fw-normal">00</sup>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row justify-content-center mx-1">
+				<div class="d-none d-lg-block col-12 px-0"
+					style="background-color: #fbf1d0; position: relative; height: 20em;">
+					<div class="d-flex border-bottom border-schedule d-none"
+						 th:each="showTimeByDate: ${film.showTimesByDate}"
+						 data-th-attr="rolling-day=${showTimeByDate.key}"
+						 style="height: 100%;">
+						<div class="border-start border-yellow"
+							th:each="hour: ${timeLine}"
+							th:style=" 'width:' + ${100*1.0/timeLine.size()} + '%;'">
+							<div class="d-flex flex-column" style="height: 100%;">
+								<div class="col"></div>
+								<div class="col">
+									<a th:href="@{/showTimes/showTime/{showTimeId}(showTimeId=${showTime.id})}"
+										class="hall" th:each="showTime: ${showTimeByDate.value}"
+										th:if="${showTime.startTime.getHour()==hour} and ${showTime.hallId==2}"
+										th:classappend="${showTime.getShortHallName()}"
+										th:text="${showTime.startTime.toLocalTime()}"
+										data-th-attr="data-film-time-start=${showTime.startTime.getMinute()}, show-time-start=${showTime.startTime}">
+									</a>
+								</div>
+								<div class="col">
+									<a th:href="@{/showTimes/showTime/{showTimeId}(showTimeId=${showTime.id})}"
+										class="hall" th:each="showTime: ${showTimeByDate.value}"
+										th:if="${showTime.startTime.getHour()==hour} and ${showTime.hallId==3}"
+										th:classappend="${showTime.getShortHallName()}"
+										th:text="${showTime.startTime.toLocalTime()}"
+										data-th-attr="data-film-time-start=${showTime.startTime.getMinute()}, show-time-start=${showTime.startTime}">
+									</a>
+								</div>
+								<div class="col"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid my-4" th:insert="~{movies/allMoviesInPlaying :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="/js/shiftByMinutes.js"></script>
+<script>
+$(".img-fluid").each(function(){
+	let posterUrl = $(this).attr("src");
+	$(this).load(posterUrl, function(response, status) {
+        if (status !== 'success') {
+        	$(this).attr("src","http://localhost:8080/img/corn-bg-yellow.jpg");
+        }
+    });
+});
+</script>
+<script type="text/javascript">
+	function setCoverWidth() {
+		let date = new Date();
+		let hour = date.getHours();
+		if (hour >= 2 && hour < 10) {
+			$(".cover").css("width", "0%");
+		} else if (hour >= 10 && hour < 24) {
+			let minutes = hour * 60 + date.getMinutes();
+			let minutesByOpen = minutes - 600;
+			let percent = minutesByOpen * 0.1041;
+			let totalPercent = percent + "%";
+			$(".cover").css("width", totalPercent);
+		} else if (hour == 0) {
+			let minutes = 24 * 60 + date.getMinutes();
+			let minutesByOpen = minutes - 600;
+			let percent = minutesByOpen * 0.1041;
+			let totalPercent = percent + "%";
+			$(".cover").css("width", totalPercent);
+		} else if (hour > 0 && hour < 2) {
+			let minutes = 24 * 60 + hour * 60 + date.getMinutes();
+			let minutesByOpen = minutes - 600;
+			let percent = minutesByOpen * 0.1041;
+			let totalPercent = percent + "%";
+			console.log(totalPercent);
+			$(".cover").css("width", totalPercent);
+		}
+	}
+</script>
+<script th:inline="javascript">
+const datesList =  /*[[${datesList}]]*/ null;
+const start = datesList[0]
+const end = datesList[datesList.length-1]
+$(function(){
+	$("#datepicker").datepicker({
+		weekHeader: 'Не',
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        defaultDate: start,
+		minDate: start,
+		maxDate: end,
+		onSelect: function(dateText, inst) {
+			$('.cover').remove();
+    		hideFutureDates(start, dateText);
+			$("button.btn").each(function() {
+				$(this).removeClass('active');   			
+				if(dateText === $(this).attr('id')) {
+					$(this).addClass('active');
+	    		}
+			});
+        	}
+		});
+	});
+</script>
+<script th:inline="javascript">
+	function disablePastShowTimes(openStr) {
+		let currentDateTime;
+		let currentTime = new Date();
+		let currMinute = currentTime.getMinutes();
+		let currHour = currentTime.getHours();
+		if(currHour >=0 && currHour <2) {
+			currentDateTime = new Date(openStr);
+			let day = currentDateTime.getDate() + 1;
+			currentDateTime.setDate(day);
+		} else {
+			currentDateTime = new Date(openStr);
+		}	
+		currentDateTime.setHours(currHour, currMinute);
+		
+		$(".hall").each(function(){
+			let start = $(this).attr("show-time-start");
+			if (typeof start !== 'undefined') {
+				let showTimeStart = new Date(start);
+				if(showTimeStart < currentDateTime) {
+					$(this).addClass('disabled');
+				}
+			}
+		});
+	}
+</script>
+<script>
+	function hideFutureDates(openStr, date) {
+		$("div.d-flex.border-bottom.border-schedule[rolling-day]").each(function() {
+			$(this).removeClass('d-none');
+			let rollingDay = $(this).attr("rolling-day");
+			 			
+			if(date !== rollingDay) {
+				$(this).addClass('d-none');
+    		} 
+
+			if(rollingDay === openStr) {
+    			$(this).prepend('<div class="cover"></div>');
+    			setCoverWidth();
+    			disablePastShowTimes(openStr);
+    		}
+		});
+		
+		$("div.row.row-cols-2.row-cols-sm-3.row-cols-md-4").each(function() {
+			$(this).removeClass('d-none');
+			let rollingDay = $(this).attr("rolling-day");
+			 			
+			if(date !== rollingDay) {
+				$(this).addClass('d-none');
+    		} 
+			
+		});
+	}
+</script>
+<script th:inline="javascript">
+	const openStr = datesList[0]
+	$(document).ready(function() {
+		hideFutureDates(openStr, openStr);
+
+    	$("button.btn-custom-outline-warning").click(function(){
+    		$('.cover').remove();
+    		var date = $(this).attr('id');
+    		$("#datepicker").datepicker("setDate", date);
+    		hideFutureDates(openStr, date);
+    			$("button.btn-custom-outline-warning").each(function() {
+    				$(this).removeClass('active');   			
+    			});
+    		$(this).addClass('active');
+		})
+    })
+</script>
+<script>
+$('label.btn').on('click', function() {
+    $('#datepicker').datepicker('show');
+});
+</script>
+<script th:inline="javascript">
+	const err = /*[[${param.error}]]*/ null;
+	$(document).ready(function () {
+		if(err != null) {
+			const modal = new bootstrap.Modal(document.querySelector('#logInFormModal'));
+	        modal.show();			
+		}		
+	});
+</script>
+
+</body>

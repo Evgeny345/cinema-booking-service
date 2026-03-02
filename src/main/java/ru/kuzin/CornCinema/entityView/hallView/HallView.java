@@ -15,6 +15,8 @@ import ru.kuzin.CornCinema.models.Hall;
 public interface HallView extends HallIdView {
 	
 	String getName();
+	@Mapping("LOWER(SUBSTRING(name, 1, LENGTH(name)-5))")
+	String getShortName();
 	@MappingIndex("rowNumber")
 	@Mapping("seats")
 	@MultiCollectionMapping(comparator = SeatView.RowNumberComparator.class)

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${showTime.movieTitle}">schedule</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="/css/reserveTickets.css" rel="stylesheet">
+	<link href="/css/showTimeInfo.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+	<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="background-color: #343a40;">    
+            <div class="modal-body text-center">
+                <h5 class="text-center" id="exampleModalLabel" style="color: rgb(237, 169, 1);">Oops!</h5>
+                <p class="fs-6 text-light text-opacity-75">You cannot buy more than five tickets at a time!</p>
+                <button type="button" class="btn btn-reserve" data-bs-dismiss="modal">Close window</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal fade" id="unbookedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">    
+            <div class="modal-body text-center">
+                <h5 class="custom-header text-center" id="exampleModalLabel">Oops!</h5>
+                <p class="fs-6">Seats </p><span th:each="ticket: ${unbookedTickets}" th:text="${'row ' + ticket.rowNumber + ', seat ' + ticket.seatNumber}">d</span><span> already booked</span>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close window</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="container-fluid">
+	<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+	<div class="mb-3" th:insert="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+	<div class="container mb-3">	
+		<div class="row justify-content-end align-content-center"> 
+        <div class="col-12 col-lg-6 mt-5 pt-5" id="controls">
+            <form th:action="@{/showTimes/reserveTickets}" th:method="post" id="reserveTicketsForm">
+            <input type="hidden" th:value="${showTime.id}" name="showTimeId"/>
+            <div class="row justify-content-md-center py-5">
+            		<div class="col-10 col-md-8  ps-4">
+                		<div th:class=" 'screen-' + ${showTime.shortHallName}">screen</div>
+            		</div>
+        		</div>
+            <div class="d-flex flex-row justify-content-between my-1" th:each="ticketsByRow: ${showTime.tickets}">
+                <div class="col-2 col-md-2">
+                    <div th:class=" 'left-row-' + ${showTime.shortHallName}" th:text="${ticketsByRow.key}">1</div>
+                </div>
+                <div class="col-10 col-md-8">
+                    <div class="d-flex flex-row justify-content-center">
+                        <div class="me-1" th:each="ticket, iterStat: ${ticketsByRow.value}" th:classappend="${ticket.sold==true}? 'div-disable'"
+                                          data-bs-toggle="tooltip"  data-bs-custom-class="custom-tooltip"
+                                          data-bs-placement="bottom" data-bs-html="true" data-bs-trigger="hover"
+                                          th:title="${'Row: ' + ticket.seat.rowNumber + '<br>Place: ' + ticket.seat.seatNumber + '<br>Price: ' + ticket.price}">
+                            <input type="checkbox" name="ticketsList" th:disabled="${ticket.sold==true}" th:value="${ticket.id}" th:id="${ticket.id}"
+                            	   th:class="${#strings.contains(ticket.seat.category, 'kissing')} ? ${'seat-category-' + #strings.replace(ticket.seat.category, '&#32', '-') + '-' + showTime.shortHallName} : ${'seat-category-' + #strings.replace(ticket.seat.category, '&#32', '-')}"                        	   
+                            	   data-th-attr="data-price=${ticket.price}, data-row=${ticket.seat.rowNumber}, data-place=${ticket.seat.seatNumber}">
+                            <label th:for="${ticket.id}"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 d-none d-lg-block">
+                    <div class="d-flex justify-content-end">
+                        <div th:class=" 'right-row-' + ${showTime.shortHallName}" th:text="${ticketsByRow.key}">1</div>
+                    </div>
+                </div>
+            </div>
+            </form>        
+            <hr class="style3 my-5">
+            <div class="d-flex flex-column flex-md-row justify-content-md-between">
+                <div class="d-flex justify-content-between justify-content-md-start">
+                    <div class="d-flex flex-row justify-content-start me-2" th:each="priceByCategory: ${showTime.prices}">
+                        <div th:class="${#strings.contains(priceByCategory.categoryName, 'kissing')} ? ${'free-seat-category-' + #strings.replace(priceByCategory.categoryName, '&#32', '-') + '-' + showTime.shortHallName} : ${'free-seat-category-' + #strings.replace(priceByCategory.categoryName, '&#32', '-')}"></div>
+                        <div>
+                            <p class="mt-1 ms-1"> - <span th:text="${priceByCategory.price}">350</span> &#x20bd</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-start d-none d-md-block">
+                    <div class="d-flex justify-content-between justify-content-md-start">
+                        <div class="d-flex justify-content-start me-2">
+                            <div class="selected-seat"></div>
+                            <div>
+                                <p class="mt-1 ms-1"> - Selected seat</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-start me-2">
+                            <div class="solid-seat"></div>
+                            <div>
+                                <p class="mt-1 ms-1"> - Seat get sold</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-12 col-lg-3 order-first order-lg-last">
+            <div class="card custom-card" style="filter: brightness(88%);">
+                <div class="card-body">
+                    <p class="fs-6 mb-0" id="timer">Time before reloading: </p>
+                    <p class="fs-5 custom-header mb-0">Movie:</p>
+                    <a class="fs-6 link-body-emphasis link-offset-2 link-opacity-75 link-underline-opacity-0 link-underline-opacity-100-hover mb-2" th:text="${showTime.movieTitle}" th:href="@{/movies/movie/{movieId}(movieId=${showTime.movieId})}">movie</a>
+                    <p class="fs-5 custom-header mb-0 mt-1">Start time:</p>
+                    <p class="fs-6 mb-0" th:text="${#temporals.format(showTime.startTime, 'EEEE, dd MMMM', new java.util.Locale('en'))}">Monday</p>
+                    <p class="fs-6 mb-2" th:text="${showTime.startTime.toLocalTime()}">13.00</p>
+                    <p class="fs-5 custom-header mb-0">Hall:</p>
+                    <p class="fs-6 mb-2 fw-medium" th:classappend="${'hall-name-text-color-' + #strings.toLowerCase(#strings.substringBefore(showTime.hallName, ' hall'))}" th:text="${showTime.hallName}">Hall №7</p>
+                    <p class="fs-5 custom-header mb-0">Selected seats:</p>
+                    <p class="fs-6 mb-2" id="result">Seats are not selected.</p>
+                    <hr class="style3">
+                    <p class="fs-5 custom-header mb-2">Total amount: <span style="color: #4C4C4C; font-weight: 400;" id="amount">0 &#x20bd</span></p>
+                    
+                    <p sec:authorize="${!#authorization.expression('hasRole(''ROLE_USER'')')}" class="text-start fs-6 mb-2">please 
+                    	<button class="btn btn-lg btn-link link-offset-2 btn-link-custom-warning pt-0" data-bs-toggle="modal" data-bs-target="#logInFormModal">
+                    		login
+                    	</button> to reserve tickets
+                    </p>
+                    <div class="row">
+                    	<div class="col-6">
+                    		<p sec:authorize="${#authorization.expression('hasRole(''ROLE_USER'')')}" class="text-center mt-1"><button type="submit" id="reserveButton" class="btn btn-reserve" form="reserveTicketsForm">Reserve</button></P>
+                    	</div>
+                    	<div class="col-6">
+                    		<p class="text-center"><button type="submit" class="btn btn-lg btn-link link-offset-2 btn-link-custom-warning" id="clear">Clear</button></P>
+                    	</div>
+                    </div>
+                </div>    
+            </div>             
+        </div>
+    </div>
+    </div>
+    <div class="container-fluid" th:insert="~{movies/allMoviesInPlaying :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+<script th:inline="javascript">
+	let showUnbookedModal = /*[[${showModal}]]*/ null;
+	if(showUnbookedModal) {
+        const modal = new bootstrap.Modal(document.querySelector('#unbookedModal'));
+        modal.show();
+	}
+</script>
+<script th:inline="javascript">
+	let showTimeId = /*[[${showTime.id}]]*/ null;
+    
+	function getFormattedTimeString(totalSeconds) {
+  
+        function formatTimeString(num) {
+          return ( num < 10 ? "0" : "" ) + num;
+        }
+
+        let minutes = Math.floor(totalSeconds / 60);
+        totalSeconds = totalSeconds % 60;
+
+        let seconds = Math.floor(totalSeconds);
+
+        minutes = formatTimeString(minutes);
+        seconds = formatTimeString(seconds);
+
+        let currentTimeString = minutes + ":" + seconds;
+
+        return currentTimeString;
+
+    }
+
+    $(document).ready(function() {
+        let secondsBeforeUpdate = 180;
+        setInterval(function() {
+            if (secondsBeforeUpdate !== 0) {
+                secondsBeforeUpdate = secondsBeforeUpdate - 1;
+                $('#timer').text('Time before reloading: ' + getFormattedTimeString(secondsBeforeUpdate));
+            } else {
+            	window.location.href = '/showTimes/showTime/'+showTimeId;
+            }
+        }, 1000);
+    });
+</script>
+<script>
+    var arr = [];
+    if ($.isEmptyObject(arr)) {
+        $('#reserveButton').prop('disabled', true);
+    }
+    $('input:checkbox').on("change", function () {           
+    	if (arr.length >= 0) {
+            $('#reserveButton').prop('disabled', false);
+        }
+    	if ($(this).is(':checked')) {
+            	arr.push($(this).attr('name'));
+        } else {
+                arr.splice(arr.indexOf($(this).attr('name')), 1);
+        }
+        var rows = new Map();            
+        if(arr.length > 5) {
+                $(this).prop('checked', false);
+                arr.splice(arr.indexOf($(this).attr('name')), 1);
+                const modal = new bootstrap.Modal(document.querySelector('#exampleModal'));
+                modal.show();
+         } else {
+                $('input:checkbox:checked').each(function() {                
+                if(!rows.has($(this).attr("data-row"))) {
+                    var places = [];
+                    places.push($(this).attr("data-place"));
+                    rows.set($(this).attr("data-row"), places);
+                } else {
+                    var places = rows.get($(this).attr("data-row"));
+                    places.push($(this).attr("data-place"));
+                    rows.set($(this).attr("data-row"), places);
+                }
+          });
+          var newHTML = [];
+          rows.forEach((value, key) => {
+                if(value.length < 2) {
+                    newHTML.push('Row: ' + key + ', seat:' + value);
+                } else {
+                    newHTML.push('Row: ' + key + ', seat:' + value);
+                }       
+           })
+           if ($.isEmptyObject(newHTML)) {
+                $('#result').html("Seats are not selected.");
+                $('#reserveButton').prop('disabled', true);
+           }
+           else {
+                $("#result").html(newHTML.join("<br>"));
+           }
+        }     
+    });
+</script>
+<script>
+    $('#clear').click(function(){
+         arr.splice(0,arr.length);
+         $('body input:checkbox').prop('checked', false);
+         $('#result').html("Seats are not selected.");
+         $('#amount').html("0 &#x20bd");
+         $('#reserveButton').prop('disabled', true);
+    });
+</script>
+<script th:inline="javascript">
+    $('input:checkbox').on("change", function () {
+         var checked = [];
+         $('input:checkbox:checked').each(function() {
+                checked.push($(this).attr("data-price"));
+         });
+         var total = 0;
+         for (var i = 0; i < checked.length; i++) {
+                total += checked[i] << 0;
+         }
+         $("#amount").html(total + ' &#x20bd');
+     });
+</script>
+<script th:inline="javascript">
+	const err = /*[[${param.error}]]*/ null;
+	console.log(err);
+	$(document).ready(function () {
+		if(err != null) {
+			const modal = new bootstrap.Modal(document.querySelector('#logInFormModal'));
+	        modal.show();			
+		}		
+	});
+</script>
+</body>

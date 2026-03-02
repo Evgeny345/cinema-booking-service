@@ -7,8 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.blazebit.persistence.view.CreatableEntityView;
 import com.blazebit.persistence.view.EntityView;
 
-import ru.kuzin.CornCinema.entityView.filmView.FilmIdView;
 import ru.kuzin.CornCinema.entityView.hallView.HallIdView;
+import ru.kuzin.CornCinema.entityView.movieView.MovieIdView;
 import ru.kuzin.CornCinema.models.ShowTime;
 
 @EntityView(ShowTime.class)
@@ -18,10 +18,10 @@ public interface ShowTimeFormView extends ShowTimeIdView {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	LocalDateTime getStartTime();
 	HallIdView getHall();
-	FilmIdView getFilm();
+	MovieIdView getMovie();
 	
 	public void setStartTime(LocalDateTime startTime);
 	public void setHall(HallIdView hall);
-	public void setFilm(FilmIdView film);
+	public void setMovie(MovieIdView film);
 
 }

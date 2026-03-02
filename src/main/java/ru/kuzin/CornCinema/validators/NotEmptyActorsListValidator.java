@@ -5,12 +5,12 @@ import java.util.Set;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import ru.kuzin.CornCinema.entityView.personView.PersonForCreateFilmImpl;
+import ru.kuzin.CornCinema.entityView.personView.PersonForCreateMovie;
 
-public class NotEmptyActorsListValidator implements ConstraintValidator<NotEmptyActorsList, Set<PersonForCreateFilmImpl>> {
+public class NotEmptyActorsListValidator implements ConstraintValidator<NotEmptyActorsList, Set<PersonForCreateMovie>> {
 
 	@Override
-    public boolean isValid(Set<PersonForCreateFilmImpl> values, ConstraintValidatorContext context) {
+    public boolean isValid(Set<PersonForCreateMovie> values, ConstraintValidatorContext context) {
 		
 		if(values == null)
 			return false;

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater info</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="/css/header.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+<div class="container-fluid">
+	<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+	<div th:replace="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+		<div class="container">
+			<h1 class="text-secondary-emphasis fw-semibold mt-5">How to find us</h1>
+			<hr class="mb-4" style="border-image: linear-gradient(90deg, #efdec1 15%, rgba(193,132,27,1) 50%) 0 0 100%/0 0 1px;">
+			<div class="row justify-content-between align-items-center">
+				<div class="col-12 col-md-6">
+					<div class="row">
+						<div class="fs-2 my-5">
+							<div class="d-flex justify-content-start">
+								<div class="me-5 pt-sm-4 pt-md-0">
+									<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                  						<path fill="#c1841b" d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                					</svg>
+								</div>
+								<div class="pt-1">
+									<p class="align-self-center text-body-emphasis">224 Summit Avenue Rialto, CA 92377</p>
+								</div>
+							</div>
+						</div>
+						<div class="fs-2 mb-5">
+							<div class="d-flex justify-content-start">
+								<div class="me-5 pt-sm-2 pt-md-0">
+									<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                  						<path fill="#c1841b" fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z" />
+                					</svg>
+								</div>
+								<div class="pt-1">
+									<p class="align-self-center text-body-emphasis">555-0110</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-12 col-md-4 text-center">
+					<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A367d6bbe2b9e20c0aca77f0982c87a41a343ef9b17da4508559fa249dc99cca7&amp;width=420&amp;height=350&amp;lang=en_US&amp;scroll=true"></script>
+				</div>
+			</div>
+			<h1 class="text-secondary-emphasis fw-semibold mt-5">About</h1>
+			<hr class="mb-4" style="border-image: linear-gradient(90deg, #efdec1 15%, rgba(193,132,27,1) 50%) 0 0 100%/0 0 1px;">
+			<p class="fs-6">Step into a world of cinematic wonder at cinema
+				theater, where every film is an adventure waiting to unfold. Our
+				state-of-the-art theater offers the perfect blend of comfort,
+				technology, and atmosphere, ensuring that your movie experience is
+				nothing short of spectacular.</p>
+			<p class="fs-6">Whether you’re a film buff, a casual viewer, or
+				looking for a perfect date night, cinema theater is your destination
+				for unforgettable entertainment. Check our schedule and book your
+				tickets online for a hassle-free experience.</p>
+			<p class="fs-6 mb-5">Our comfortable seating and inviting
+				atmosphere make it easy to relax and enjoy your favorite films with
+				friends and family. Indulge in a wide array of delicious snacks and
+				beverages, from buttery popcorn to gourmet treats, ensuring that
+				your cinematic experience is as enjoyable as the film itself.</p>
+		</div>
+		<div th:replace="~{movies/allMoviesInPlaying :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+</body>

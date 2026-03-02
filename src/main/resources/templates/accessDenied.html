@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="/css/header.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+<div class="container-fluid">
+	<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+	<div th:replace="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+	<div class="container">
+    	<h1 class="text-secondary-emphasis fw-medium mt-5">Sorry, access denied</h1>
+    	<p class="fs-5 text-secondary-emphasis mb-5">please contact us.</p>
+  	</div>
+	<div class="container-fluid fixed-bottom" th:insert="~{movies/allMoviesInPlaying :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+</body>

@@ -14,8 +14,8 @@ import com.blazebit.persistence.view.StaticImplementation;
 import com.blazebit.persistence.view.spi.type.EntityViewProxy;
 
 import jakarta.validation.Valid;
-import ru.kuzin.CornCinema.entityView.filmView.FilmIdView;
 import ru.kuzin.CornCinema.entityView.hallView.HallIdView;
+import ru.kuzin.CornCinema.entityView.movieView.MovieIdView;
 import ru.kuzin.CornCinema.entityView.priceView.TicketPriceFormImpl;
 import ru.kuzin.CornCinema.models.ShowTime;
 
@@ -29,7 +29,7 @@ public class ShowTimeFormViewImpl implements ShowTimeFormView, EntityViewProxy {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime startTime;
 	private HallIdView hall;
-	private FilmIdView film;
+	private MovieIdView movie;
 	@Valid
 	private List<TicketPriceFormImpl> listTicketPrice = new ArrayList<>();
 	
@@ -41,28 +41,28 @@ public class ShowTimeFormViewImpl implements ShowTimeFormView, EntityViewProxy {
 		this.id = null;
 		this.startTime = null;
 		this.hall = null;
-		this.film = null;
+		this.movie = null;
 	}
 	
 	public ShowTimeFormViewImpl(Integer id) {
 		this.id = id;
 		this.startTime = null;
 		this.hall = null;
-		this.film = null;
+		this.movie = null;
 	}
 	
-	public ShowTimeFormViewImpl(Integer id, LocalDateTime startTime, HallIdView hall, FilmIdView film) {
+	public ShowTimeFormViewImpl(Integer id, LocalDateTime startTime, HallIdView hall, MovieIdView movie) {
 		this.id = id;
 		this.startTime = startTime;
 		this.hall = hall;
-		this.film = film;
+		this.movie = movie;
 	}
 	
 	public ShowTimeFormViewImpl(ShowTimeFormViewImpl noop, int offset, Object[] tuple) {
 		this.id = (Integer) tuple[offset + 0];
 		this.startTime = (LocalDateTime) tuple[offset + 3];
 		this.hall = (HallIdView) tuple[offset + 2];
-		this.film = (FilmIdView) tuple[offset + 1];
+		this.movie = (MovieIdView) tuple[offset + 1];
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class ShowTimeFormViewImpl implements ShowTimeFormView, EntityViewProxy {
 	@Override
 	public HallIdView getHall() {return hall;}
 	@Override
-	public FilmIdView getFilm() {return film;}
+	public MovieIdView getMovie() {return movie;}
 	public List<TicketPriceFormImpl> getListTicketPrice() {return listTicketPrice;}
 
 	@Override
@@ -80,7 +80,7 @@ public class ShowTimeFormViewImpl implements ShowTimeFormView, EntityViewProxy {
 	@Override
 	public void setHall(HallIdView hall) {this.hall = hall;}
 	@Override
-	public void setFilm(FilmIdView film) {this.film = film;}
+	public void setMovie(MovieIdView movie) {this.movie = movie;}
 
 	@Override
 	public Class<?> $$_getJpaManagedClass() {

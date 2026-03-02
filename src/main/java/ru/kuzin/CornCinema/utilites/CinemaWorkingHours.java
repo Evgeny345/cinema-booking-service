@@ -30,6 +30,7 @@ public class CinemaWorkingHours {
 	private Integer intervalBetweenShowTimes;
 	private static final LocalDate openAndCloseOnSameDay = LocalDate.of(2023, 1, 1);
 	private static final LocalDate openAndCloseOnDifferentDay = LocalDate.of(2023, 1, 2);
+	private static final LocalTime midnight = LocalTime.of(0, 0);
 
 	public LocalTime getOpeningTime() {
 		return openingTime;
@@ -52,6 +53,10 @@ public class CinemaWorkingHours {
 		return LocalDateTime.of(closingDate, closingTime);
 	}
 
+	public LocalDateTime getCinemaOpeningDateTimeOnCertainDay(LocalDate date) {
+		return LocalDateTime.of(date, openingTime);
+	}
+	
 	public LocalDateTime getCinemaClosingDateTimeOnCertainDay(LocalDate date) {
 		LocalDate closingDate = checkOpenAndCloseDuringOneDay() ? date : date.plusDays(1L);
 		return LocalDateTime.of(closingDate, closingTime);
@@ -62,7 +67,7 @@ public class CinemaWorkingHours {
 	}
 
 	/**
-	 * Sequence of hours from opening time to closing time in increments of one hour
+	 * Sequence of hours from opening time to closing time with increments of one hour
 	 */
 	public Set<Integer> getTimeLine() {
 		return Stream.iterate(getOpeningDateTime(), d -> d.isBefore(getClosingDateTime()), d -> d.plusHours(1L))
@@ -71,6 +76,18 @@ public class CinemaWorkingHours {
 
 	public boolean checkOpenAndCloseDuringOneDay() {
 		return openingTime.isBefore(closingTime);
+	}
+	
+	public LocalDate getStartDayForSchedule(LocalDateTime showTimeStart) {
+		
+		LocalDate startDayForSchedule = showTimeStart.toLocalDate();
+		LocalTime startTimeOfShowTime = showTimeStart.toLocalTime();
+		
+		if(startTimeOfShowTime.isAfter(midnight) && startTimeOfShowTime.isBefore(getClosingTime()))
+			startDayForSchedule = showTimeStart.toLocalDate().minusDays(1);
+		if(startTimeOfShowTime.equals(midnight))
+			startDayForSchedule = checkOpenAndCloseDuringOneDay()? startDayForSchedule: showTimeStart.toLocalDate().minusDays(1);
+		return startDayForSchedule;
 	}
 
 }

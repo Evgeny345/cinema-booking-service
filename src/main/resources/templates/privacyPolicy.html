@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="icon" type="image/ico" th:href="@{/static/img/favicon.ico}">
+	<link href="/css/header.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+<div class="container-fluid">
+	<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+	<div th:replace="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+		<div class="container">
+			<h1 class="text-secondary-emphasis fw-semibold mt-5">Cinema Privacy Policy</h1>
+        	<hr class="mb-4" style="border-image: linear-gradient(90deg, #efdec1 15%, rgba(193,132,27,1) 50%) 0 0 100%/0 0 1px;">
+        	<p class="fs-4 text-start fw-semibold">How Cinema Collects Information About You</p>
+        	<p class="fs-6 mb-1">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+        	<p class="fs-6 mb-1">Quae facere temporibus deleniti nihil ipsa nemo sapiente itaque placeat quibusdam voluptates consequuntur, obcaecati libero soluta iure nesciunt. Natus unde rerum eius ex exercitationem minima harum evenieti vitae, modi ipsum eligendi nihil pariatur.</p>
+        	<p class="fs-6 mb-1">Ullam dignissimos, rerum soluta nulla totam dolor sapiente iste exercitationem quia! Voluptates nesciunt quaerat enim ab temporibus incidunt, voluptatibus sit minus molestiae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, eveniet repellat magni nihil facilis optio hic esse libero nesciunt.</p>
+        	<p class="fs-6 mb-4">Non quia fugit minus vitae amet provident soluta distinctio voluptatem velit fugiat ratione saepe voluptate eligendi nisi architecto tenetu!</p>
+        	<p class="fs-4 text-start fw-semibold mb-1">How Cinema Uses Your Information</p>
+        	<p class="fs-5 text-start mb-1">We use information to</p>
+        	<ul style="list-style-type: disc;">
+	        	<li class="fs-6">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</li>
+	        	<li class="fs-6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, alias accusamus.</li>
+	        	<li class="fs-6">Dolores, alias accusamus.</li>
+            	<li class="fs-6">Voluptates nesciunt quaerat enim ab temporibus incidunt.</li>
+            	<li class="fs-6">Natus unde rerum eius ex exercitationem minima harum evenieti vita.</li>
+            	<li class="fs-6 mb-4">Exercitationem nostrum corporis non nulla ducimus odio possimus suscipit vel alias adipisci</li>    
+        	</ul>
+        	<p class="fs-4 text-start fw-semibold">Cookies Policy</p>
+        	<p class="fs-6 mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis, totam rerum saepe quod sint, distinctio, inventore dolorem consectetur explicabo doloremque qui cum voluptas quo deserunt corrupti reiciendis possimus quas unde velit! Perferendis suscipit atque ratione iure dolores porro odit voluptatum eos corporis! Doloribus magni error, dolor perferendis recusandae quae officia.</p>
+		</div>
+	<div th:replace="~{movies/allMoviesInPlaying :: footer}"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+</body>

@@ -1,0 +1,52 @@
+.carousel {
+    height: calc(100vh - 15rem);
+    /* height: 80vh; */
+}
+
+.carousel-inner, .carousel-item {
+   height: 100%;
+}
+
+.cell-bar {
+	width: 100%;
+	height: 8vh;
+	position:sticky; 
+	top:56px; 
+	z-index: 2;
+	border-radius: 0%; 
+	background: rgba(193, 132, 27, 1);
+	background: linear-gradient(90deg,rgba(247, 212, 152, 1) 0%, #c1841b 0%, #f2db0a 100%);
+}
+
+.carousel {
+  width: 100%;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 500px; /* высота изображения */
+  object-fit: cover;
+}
+
+.navbar-brand>img {
+  height: 100%;
+}
+
+.navbar-brand {
+  padding: 0;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.custom-toggler.navbar-toggler {
+	border: 2px solid black;
+}
+
+.form-control:focus {
+    border-color: rgb(193, 132, 27);
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 8px #f2db0a;
+    box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 10px #f2db0a;
+}

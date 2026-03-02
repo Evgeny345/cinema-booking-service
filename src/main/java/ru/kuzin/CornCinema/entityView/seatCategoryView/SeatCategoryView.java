@@ -7,6 +7,6 @@ import ru.kuzin.CornCinema.models.SeatCategory;
 @EntityView(SeatCategory.class)
 public interface SeatCategoryView extends SeatCategoryIdView {
 	
-	String getName();
+	String getName();	
 
 }

@@ -1,0 +1,58 @@
+.custom-card {
+    background-color: #eee;
+    border-radius: 0.15em;
+    border: 1.5px solid #c1960a;
+}
+
+.custom-header {
+    color: rgba(193,132,27,1);
+    font-weight: 500;
+}
+
+.btn-reserve {
+    background-color: rgb(237, 169, 1);
+    border-color: rgb(237, 169, 1);
+    border-radius: 0.15em;
+}
+
+.btn-reserve:hover {
+    background-color: rgba(193, 132, 27, 1);
+    border-color: rgba(193, 132, 27, 1);
+    border-radius: 0.15em;
+}
+
+.btn-reserve:disabled {
+    pointer-events: none;
+    background-color: rgb(251, 241, 208);
+    border-color: rgb(237, 169, 1);
+    border-radius: 0.15em;
+}
+
+.btn-link-custom-warning {
+    color: rgba(193,132,27,1);
+    text-decoration: none;
+}
+
+.btn-link-custom-warning:hover {
+    color: rgba(193,132,27,1);
+    text-decoration: underline;
+}
+
+.div-disable {
+	pointer-events: none;
+}
+
+.form-control:focus {
+    border-color: rgb(193, 132, 27);
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 8px #f2db0a;
+    box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 10px #f2db0a;
+}
+
+.green {
+	color: rgba(33, 153, 51, 0.973);
+}
+
+.blue {
+	color: rgba(69, 126, 187, 0.973);
+}

@@ -33,23 +33,26 @@ public class ShowTime {
 	private Integer id;
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private LocalDateTime startTime;
-	private Film film;
+	private Movie movie;
 	private Hall hall;
 	private Set<Price> prices = new HashSet<>();
+	private Set<Ticket> tickets = new HashSet<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer getId() {return id;}
 	@Column(name = "start_time", nullable = false)
 	public LocalDateTime getStartTime() {return startTime;}
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "film_id", referencedColumnName = "id")
-	public Film getFilm() {return film;}
-	@ManyToOne
+	public Movie getMovie() {return movie;}
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "hall_id", referencedColumnName = "id")
 	public Hall getHall() {return hall;}
 	@OneToMany(mappedBy = "showTime", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
 	public Set<Price> getPrices() {return prices;}
+	@OneToMany(mappedBy = "showTime", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+	public Set<Ticket> getTickets() {return tickets;}
 	
 	public void addPrice(SeatCategory category, BigDecimal price) {
 		Price priceByCategory = new Price(this, category, price);
@@ -57,9 +60,20 @@ public class ShowTime {
 		priceByCategory.setShowTime(this);
 	}
 	
+	public void addTicket(Seat seat) {
+		Ticket ticket = new Ticket(false, this, seat);
+		tickets.add(ticket);
+		ticket.setShowTime(this);
+	}
+	
 	public void deletePrice(Price price) {
 		this.prices.remove(price);
 		price.setShowTime(null);
+	}
+	
+	public void deleteTicket(Ticket ticket) {
+		this.tickets.remove(ticket);
+		ticket.setShowTime(null);
 	}
 
 }

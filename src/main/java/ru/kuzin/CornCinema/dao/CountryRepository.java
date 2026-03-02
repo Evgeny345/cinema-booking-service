@@ -11,6 +11,9 @@ import ru.kuzin.CornCinema.models.Country;
 public interface CountryRepository extends JpaRepository<Country, Integer>{
 	
 	List<CountryView> getAllCountryView();
+	
+	List<CountryIdView> getAllCountryIdView();
+	
 	CountryIdView getCountryIdViewById(Integer id);
 
 }

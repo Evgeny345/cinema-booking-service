@@ -12,9 +12,13 @@ import ru.kuzin.CornCinema.models.Hall;
 public interface HallRepository extends JpaRepository<Hall, Integer> {
 	
 	HallIdView getHallIdViewById(Integer id);
+	
 	HallView getHallViewById(Integer id);
+	
 	List<HallView> getAllHallView();
+	
 	List<HallForCreateForm> getAllHallForCreateForm();
+	
 	List<HallIdView> getAllHallIdView();
 
 }

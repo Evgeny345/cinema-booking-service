@@ -7,10 +7,10 @@ import ru.kuzin.CornCinema.models.Amplua;
 
 public interface AmpluaService {
 	
-	List<AmpluaView> getAllAmplua();
+	List<AmpluaView> getAllAmpluaView();
 	
-	List<String> getAllAmpluaView2();
+	List<Amplua> getAllAmplua();
 	
-	Amplua getAmpluaById(Integer id);
-
+	Amplua getAmpluaByProfession(String profession);
+	
 }

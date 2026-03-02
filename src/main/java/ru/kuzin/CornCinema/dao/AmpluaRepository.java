@@ -10,5 +10,7 @@ import ru.kuzin.CornCinema.models.Amplua;
 public interface AmpluaRepository extends JpaRepository<Amplua, Integer> {
 	
 	List<AmpluaView> getAllAmpluaView();
+	
+	Amplua findByProfession(String profession);
 
 }

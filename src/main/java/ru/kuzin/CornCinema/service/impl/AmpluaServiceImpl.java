@@ -1,6 +1,5 @@
 package ru.kuzin.CornCinema.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,30 +16,21 @@ public class AmpluaServiceImpl implements AmpluaService {
 	private AmpluaRepository ampluaRepository;
 
 	@Autowired
-	public void setAmpluaRepository(AmpluaRepository ampluaRepository) {
-		this.ampluaRepository = ampluaRepository;
-	}
+	public void setAmpluaRepository(AmpluaRepository ampluaRepository) {this.ampluaRepository = ampluaRepository;}
 
 	@Override
-	public List<AmpluaView> getAllAmplua() {
+	public List<AmpluaView> getAllAmpluaView() {
 		return ampluaRepository.getAllAmpluaView();
 	}
 
-	public List<Amplua> getAllAmpluaView1() {
+	@Override
+	public List<Amplua> getAllAmplua() {
 		return ampluaRepository.findAll();
 	}
 
 	@Override
-	public List<String> getAllAmpluaView2() {
-		List<String> list = new ArrayList<>();
-		ampluaRepository.findAll().forEach(w -> {
-			list.add(w.getProfession());
-		});
-		return list;
+	public Amplua getAmpluaByProfession(String profession) {
+		return ampluaRepository.findByProfession(profession);
 	}
 
-	@Override
-	public Amplua getAmpluaById(Integer id) {
-		return ampluaRepository.findById(id).get();
-	}
 }

@@ -76,4 +76,9 @@ public class HallServiceImpl implements HallService {
 		return hallRepository.getAllHallIdView();
 	}
 
+	@Override
+	public HallIdView getHallIdView(Integer id) {
+		return hallRepository.getHallIdViewById(id);
+	}
+
 }

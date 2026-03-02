@@ -1,6 +1,7 @@
 package ru.kuzin.CornCinema.models;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -28,8 +29,8 @@ public class Person {
 	private String name;
 	private String lastName;
 	private LocalDate dateOfBirth;
-	private Set<Amplua> ampluas;
-	private Set<PersonWithAmpluaForFilm> films;
+	private Set<Amplua> ampluas = new HashSet<>();
+	private Set<PersonWithAmpluaForMovie> movies;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +47,6 @@ public class Person {
 			   inverseJoinColumns = @JoinColumn(name = "amplua_id"))
 	public Set<Amplua> getAmpluas() {return ampluas;}
 	@OneToMany(mappedBy = "person")
-	public Set<PersonWithAmpluaForFilm> getFilms() {return films;}
+	public Set<PersonWithAmpluaForMovie> getMovies() {return movies;}
 	
 }

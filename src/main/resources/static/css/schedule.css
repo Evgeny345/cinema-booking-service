@@ -1,0 +1,74 @@
+.border-film-info {
+    border-image: linear-gradient(90deg, #efdec1 15%, rgba(193,132,27,1) 50%) 0 0 100%/0 0 1px;
+}
+
+.border-schedule {
+    border-color: rgba(193,132,27,1) !important;
+}
+
+.border-yellow {
+    border-color: rgb(247, 212, 152) !important;
+}
+
+.image-fit-cover {
+  object-fit: cover;
+  width: 100%;
+  height: 350px;
+}
+
+.cover {
+    width: 66%;
+    height: 100%;
+    background: rgba(0, 132, 148, 0.1);
+    background-image:url(/img/pixel.png);
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    border-right: 2px solid #db507d;
+}
+
+.btn-custom-outline-warning{
+    --bs-btn-hover-color: rgba(193,132,27,1);
+    --bs-btn-border-color: rgba(193,132,27,1);   
+    --bs-btn-hover-border-color: rgb(234, 156, 21);
+    --bs-btn-active-bg: #fbf1d0;
+    --bs-btn-active-border-color: rgba(193,132,27,1);
+}
+
+.btn-custom-outline-warning:hover {
+    color: rgba(193,132,27,1) !important;
+}
+
+.circle {
+	width: 2.4em; 
+	height: 2.4em;
+	line-height: 2.1em;
+	background: #eee;
+	border-radius: 50%;
+	border: 1.15px solid #3e4d6c;
+	text-align: center;
+}
+
+.circle1 {
+	width: 2.4em; 
+	height: 2.4em;
+	line-height: 2.1em;
+	background: #fbf1d0;
+	border-radius: 50%;
+	border: 1.15px solid rgba(193,132,27,1);
+	text-align: center;
+}
+
+.img-top {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+}
+
+.form-control:focus {
+    border-color: rgb(193, 132, 27);
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 8px #f2db0a;
+    box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 10px #f2db0a;
+}

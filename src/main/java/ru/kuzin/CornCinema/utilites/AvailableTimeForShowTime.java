@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ru.kuzin.CornCinema.entityView.showTimeView.ShowTimeDuration;
+import ru.kuzin.CornCinema.entityView.showTimeView.SimpleShowTimeView;
 import ru.kuzin.CornCinema.service.HallService;
 
 /**
@@ -26,33 +26,36 @@ import ru.kuzin.CornCinema.service.HallService;
 @Component
 public class AvailableTimeForShowTime {
 	
-	private CinemaWorkingHours cinemaWorkingHousrs;
+	private CinemaWorkingHours cinemaWorkingHours;
 	private HallService hallService;	
 	
 	@Autowired
-	public void setCinemaWorkingHousrs(CinemaWorkingHours cinemaWorkingHousrs) {this.cinemaWorkingHousrs = cinemaWorkingHousrs;}
+	public void setCinemaWorkingHousrs(CinemaWorkingHours cinemaWorkingHousrs) {this.cinemaWorkingHours = cinemaWorkingHousrs;}
 	@Autowired
 	public void setHallService(HallService hallService) {this.hallService = hallService;}
 
-	public Map<LocalDate, Map<Integer, List<LocalTime>>> convert(List<ShowTimeDuration> showTimes, 
+	public Map<LocalDate, Map<Integer, List<LocalTime>>> convert(List<SimpleShowTimeView> showTimes, 
 																 LocalTime filmDuration, 
 																 LocalDateTime startPeriod, 
 																 LocalDateTime endPeriod) {
+		
 		/**
 		 * Convert set of show times to lists of LocalTime and sorted by dates and halls
 		 */
+		
 		Map<LocalDate, Map<Integer, List<LocalTime>>> availableTimeForHallByDate = 
 				showTimes
 				.stream()
+				.peek(s -> s.setStartDayForSchedule(cinemaWorkingHours.getStartDayForSchedule(s.getStartTime())))
 				.sorted()
-				.collect(Collectors.collectingAndThen(Collectors.groupingBy(ShowTimeDuration::getStartDay, Collectors.toList()),
+				.collect(Collectors.collectingAndThen(Collectors.groupingBy(SimpleShowTimeView::getStartDayForSchedule, Collectors.toList()),
 						  mapDates -> mapDates.entrySet()
 											  .stream()								  
 											  .collect(Collectors.toMap(k -> k.getKey(),
 													                    v -> v.getValue()
 													                    .stream()
 													                    .collect(Collectors.collectingAndThen(
-													                    		 Collectors.groupingBy(ShowTimeDuration::getHallId, Collectors.toList()), 
+													                    		 Collectors.groupingBy(SimpleShowTimeView::getHallId, Collectors.toList()), 
 													                    		 mapHall -> mapHall.entrySet()
 													                    		 			 .stream()
 													                    		 			 .collect(Collectors.toMap(k1 -> k1.getKey(), 
@@ -94,24 +97,23 @@ public class AvailableTimeForShowTime {
 	/**
 	 * Create list available time for new show time excluding time of another show times
 	 */
-	private List<LocalTime> getAvailableTime(List<ShowTimeDuration> showTimes, LocalTime filmDuration) {
+	private List<LocalTime> getAvailableTime(List<SimpleShowTimeView> showTimes, LocalTime movieDuration) {
 		List<LocalTime> listOfUnavailableTimeForShowTime = new ArrayList<>();
-		
 		IntStream.range(0, showTimes.size() - 1).forEach(i -> {
-			LocalDateTime endFirstShowTime = showTimes.get(i).getEndTime();
+			LocalDateTime endFirstShowTime = getShowTimeRoundedEndTime(showTimes.get(i).getMovieDuration(), showTimes.get(i).getStartTime());
 			LocalDateTime startSecondShowTime = showTimes.get(i + 1).getStartTime();
-			listOfUnavailableTimeForShowTime.addAll(removeUnavailableTimeBetweenShowTimes(endFirstShowTime, startSecondShowTime, filmDuration));
+			listOfUnavailableTimeForShowTime.addAll(removeUnavailableTimeBetweenShowTimes(endFirstShowTime, startSecondShowTime, movieDuration));
 			listOfUnavailableTimeForShowTime.add(endFirstShowTime.toLocalTime());
 		});
 		
 		LocalDateTime startFirstShowTimeOnThisDay = showTimes.get(0).getStartTime();
-		LocalDateTime startCinemaWorkingOnThisDay = LocalDateTime.of(startFirstShowTimeOnThisDay.toLocalDate(), cinemaWorkingHousrs.getOpeningTime());
-		listOfUnavailableTimeForShowTime.addAll(removeUnavailableTimeBetweenShowTimes(startCinemaWorkingOnThisDay, startFirstShowTimeOnThisDay, filmDuration));
+		LocalDateTime startCinemaWorkingOnThisDay = LocalDateTime.of(startFirstShowTimeOnThisDay.toLocalDate(), cinemaWorkingHours.getOpeningTime());
+		listOfUnavailableTimeForShowTime.addAll(removeUnavailableTimeBetweenShowTimes(startCinemaWorkingOnThisDay, startFirstShowTimeOnThisDay, movieDuration));
 		showTimes.stream().forEach((showTime) -> {
-			listOfUnavailableTimeForShowTime.addAll(removeTimeDuringShowTime(showTime.getStartTime(), showTime.getEndTime()));
+			listOfUnavailableTimeForShowTime.addAll(removeTimeDuringShowTime(showTime.getStartTime(), getShowTimeRoundedEndTime(showTime.getMovieDuration(), showTime.getStartTime())));
 		});
 		
-		List<LocalTime> availableTimeList = createDefaultTimeList(filmDuration);
+		List<LocalTime> availableTimeList = createDefaultTimeList(getRoundedMovieDuration(movieDuration));
 		availableTimeList.removeAll(listOfUnavailableTimeForShowTime);
 		return availableTimeList;
 	}
@@ -120,14 +122,15 @@ public class AvailableTimeForShowTime {
 	 * Create list of LocalTimes from opening to closing cinema(minus film duration) with increment 15 minutes 
 	 */
 	private List<LocalTime> createDefaultTimeList(LocalTime filmDuration) {
-		return Stream.iterate(cinemaWorkingHousrs.getOpeningDateTime(), 
-							  d -> d.isBefore(cinemaWorkingHousrs.getClosingDateTime().minusMinutes(getFilmDurationInMinutesIncludedBreak(filmDuration))), 
+		return Stream.iterate(cinemaWorkingHours.getOpeningDateTime(), 
+							  d -> d.isBefore(cinemaWorkingHours.getClosingDateTime().minusMinutes(getFilmDurationInMinutesIncludedBreak(filmDuration))), 
 							  d -> d.plusMinutes(15L))
 					 .map(t -> t.toLocalTime()).collect(Collectors.toList());
 	}
 	
 	private List<LocalTime> removeTimeDuringShowTime(LocalDateTime startShowTime, LocalDateTime endShowTime) {
-		return Stream.iterate(startShowTime, t -> t.isBefore(endShowTime), t -> t.plusMinutes(15L))
+		LocalDateTime endShowTimeIncludeBreak = endShowTime.plusMinutes(cinemaWorkingHours.getIntervalBetweenShowTimes());
+		return Stream.iterate(startShowTime, t -> t.isBefore(endShowTimeIncludeBreak), t -> t.plusMinutes(15L))
 					 .map(d -> d.toLocalTime())
 					 .collect(Collectors.toList());
 	}
@@ -140,8 +143,34 @@ public class AvailableTimeForShowTime {
 	}
 	
 	private long getFilmDurationInMinutesIncludedBreak(LocalTime duration) {
-		return duration.plusMinutes(cinemaWorkingHousrs.getIntervalBetweenShowTimes()).getLong(ChronoField.MINUTE_OF_DAY);
+		return duration.plusMinutes(cinemaWorkingHours.getIntervalBetweenShowTimes()).getLong(ChronoField.MINUTE_OF_DAY);
 	}
 
+	/**
+     * Get rounded up end of show time for matching with available interval of time list 
+     */
+	private LocalDateTime getShowTimeRoundedEndTime(LocalTime showTimeDuration, LocalDateTime showTimeBeginning) {
+		long originalFilmDurationInMinutes = showTimeDuration.getMinute();
+		double intervalBetweenShowTimes = cinemaWorkingHours.getIntervalBetweenShowTimes();
+		if(originalFilmDurationInMinutes%intervalBetweenShowTimes != 0) {
+			long roundedMinutes = (long) (Math.ceil(originalFilmDurationInMinutes/intervalBetweenShowTimes) * intervalBetweenShowTimes);
+			LocalTime roundedDuration = showTimeDuration.minusMinutes(originalFilmDurationInMinutes).plusMinutes(roundedMinutes);
+			//System.out.println("Roun dur: "+showTimeBeginning.plusMinutes(roundedDuration.getLong(ChronoField.MINUTE_OF_DAY)));
+			return showTimeBeginning.plusMinutes(roundedDuration.getLong(ChronoField.MINUTE_OF_DAY));
+		}
+		
+		return showTimeBeginning.plusMinutes(showTimeDuration.getLong(ChronoField.MINUTE_OF_DAY));
 
+	}
+	
+	private LocalTime getRoundedMovieDuration(LocalTime movieDuration) {
+		long originalFilmDurationInMinutes = movieDuration.getMinute();
+		double intervalBetweenShowTimes = cinemaWorkingHours.getIntervalBetweenShowTimes();
+		if(originalFilmDurationInMinutes%intervalBetweenShowTimes != 0) {
+			long roundedMinutes = (long) (Math.ceil(originalFilmDurationInMinutes/intervalBetweenShowTimes) * intervalBetweenShowTimes);
+			return movieDuration.minusMinutes(originalFilmDurationInMinutes).plusMinutes(roundedMinutes);
+		}
+		return movieDuration;
+	}
+	
 }

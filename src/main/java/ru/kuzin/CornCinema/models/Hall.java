@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(name = "hall")
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "showTimes")
+@EqualsAndHashCode(exclude = {"showTimes", "seats"})
 public class Hall {
 	
 	private Integer id;
@@ -31,8 +31,7 @@ public class Hall {
 	public Integer getId() {return id;}
 	@Column(name = "hall_name", nullable = false, length = 16)
 	public String getName() {return name;}
-	@OneToMany
-	
+	@OneToMany(mappedBy = "hall")
 	public Set<Seat> getSeats() {return seats;}
 	@OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
 	public Set<ShowTime> getShowTimes() {return showTimes;}

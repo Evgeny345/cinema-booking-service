@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheme of halls</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="/css/hallScheme.css" rel="stylesheet">
+</head>
+<body style="background-color: #eee;">
+<div th:replace="~{movies/allMoviesInPlaying :: logInModal}"></div>
+<div class="container-fluid">
+	<div th:replace="~{movies/allMoviesInPlaying :: aboutHeader}"></div>
+	<div th:replace="~{movies/allMoviesInPlaying :: mainHeader}"></div>
+	<div class="container">
+		<div class="row text-center my-3">
+        	<div class="col-2"></div>
+        	<div class="col-8 mt-5">
+            	<div class="d-grid gap2">
+                	<div class="btn-group btn-group-lg" role="group" aria-label="hall selecting">                   	     
+                    	<input type="radio" class="btn-check" name="btnradio" th:id=" 'btn' + ${hallsList[0].getShortName()}" autocomplete="off" th:data-hall-color="${hallsList[0].getShortName()}"/>
+                    	<label th:class=" 'btn btn-custom-outline-' + ${hallsList[0].getShortName()}" th:for=" 'btn' + ${hallsList[0].getShortName()}" th:text="${hallsList[0].getName()}">Blue hall</label>
+                    	<input type="radio" class="btn-check" name="btnradio" th:id=" 'btn' + ${hallsList[1].getShortName()}" autocomplete="off" th:data-hall-color="${hallsList[1].getShortName()}"/>
+                    	<label th:class=" 'btn btn-custom-outline-' + ${hallsList[1].getShortName()}" th:for=" 'btn' + ${hallsList[1].getShortName()}" th:text="${hallsList[1].getName()}">Blue hall</label>                 	
+                	</div>
+            	</div>
+        	</div>
+        	<div class="col-2"></div>
+    	</div>
+    	<div style="height: 30em;" data-scheme-color="white"></div>
+    	<div th:each="hall: ${hallsList}" class="row text-center d-none" th:data-scheme-color="${hall.getShortName()}">
+    		<div class="row justify-content-md-center py-5">
+            	<div class="col-12 col-md-8 ps-4">
+                	<div th:class=" 'screen-' + ${hall.shortName}">screen</div>
+            	</div>
+        	</div>
+        	<div class="col-2"></div>
+        	<div class="col-8">
+        		<div class="d-flex flex-row justify-content-between my-3" th:each="scheme : ${hall.seatsByRows}">
+        			<div class="col-lg-2 align-self-center d-none d-lg-block">
+                    	<div th:class=" 'left-row-' + ${hall.shortName}" th:text="${scheme.key}">1</div>
+                	</div>
+                	<div class="col-12 col-lg-8">
+                		<div class="d-flex flex-row justify-content-center">
+                			<div class="me-1" th:each="seat : ${scheme.value}">                  
+                        		<div th:class="${#strings.contains(seat.category, 'kissing')} ? ${'pt-2 seat-category-' + #strings.replace(seat.category, '&#32', '') + '-' + hall.shortName} : ${'pt-2 seat-category-' + #strings.replace(seat.category, '&#32', '')}" th:text="${seat.seatNumber}">1</div>
+                        	</div>
+                		</div>
+                	</div>
+                	<div class="col-lg-2 d-none d-lg-block align-self-center">
+                    	<div class="d-flex justify-content-end">
+                        	<div th:class=" 'right-row-' + ${hall.shortName}" th:text="${scheme.key}">1</div>
+                    	</div>
+                	</div>
+        		</div>
+        		<hr class="style3">
+        		<p class="fs-5 fw-normal text-start mb-3">Category of seat:</p>
+        		<div class="d-flex justify-content-between justify-content-md-start">
+        			<div class="d-flex flex-row justify-content-start me-3" th:each="category : ${seatCategoryList}">
+        				<div th:class="${#strings.contains(category.name, 'kissing')} ? ${'seat-category-' + #strings.replace(category.name, '&#32', '') + '-' + hall.shortName} : ${'seat-category-' + #strings.replace(category.name, '&#32', '')}"></div>
+                    	<div>
+                        	<p class="mt-1 ms-1 fs-5" th:text="${' -' + category.name}"> - standart</p>
+                    	</div>
+        			</div>
+        		</div>
+        	</div>
+        	<div class="col-2"></div>
+    	</div>
+	</div>
+</div>
+<div class="container-fluid my-4" th:insert="~{movies/allMoviesInPlaying :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+	$(document).ready(function() {
+		$(".btn-check").click(function() {
+			let color = $(this).attr('data-hall-color');
+			$('[data-scheme-color]').each(function() {
+				$(this).removeClass('d-none');
+				let text = $(this).attr("data-scheme-color");
+				if (text !== color) {
+					$(this).addClass('d-none');
+				}
+			});
+		})
+	})
+</script>
+<script th:inline="javascript">
+	const err = /*[[${param.error}]]*/ null;
+	console.log(err);
+	$(document).ready(function () {
+		if(err != null) {
+			const modal = new bootstrap.Modal(document.querySelector('#logInFormModal'));
+	        modal.show();			
+		}		
+	});
+</script>
+</body>
