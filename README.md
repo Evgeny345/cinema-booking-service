@@ -51,4 +51,4 @@ DTO layer is represent by Blaze-Persistence's entity views. Also entity views wa
 	download images to the file system. Creates QR codes to confirm booking.
 
 ## Screenshots
-<img src="screenshot10.png">
+<img src="screenshot10.png" width="40%"> <img src="screenshot7.png" width="40%"> <img src="screenshot8.png" width="40%">
