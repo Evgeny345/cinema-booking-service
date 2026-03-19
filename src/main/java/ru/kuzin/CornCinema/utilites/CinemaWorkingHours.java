@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 /**
  * Takes opening and closing time from application.properties as LocalTime, and
  * convert these to LocalDateTime if necessary. Creates time-line regardless of
- * open and close cinema on same or different day For example if cinema opening
- * at 22.00 and closing at 03.00 time-line wood look like: (22, 23, 00, 01, 02,
+ * open and close cinema on same or different day. For example, if cinema opening
+ * at 22.00 and closing at 03.00 time-line will look like: (22, 23, 00, 01, 02,
  * 03)
  */
 

@@ -18,8 +18,8 @@ public interface SeatView extends SeatIdView {
 	static class RowNumberComparator implements Comparator<SeatView> {
 
 		@Override
-		public int compare(SeatView o1, SeatView o2) {			
-			return Comparator.comparing(SeatView::getRowNumber).thenComparing(SeatView::getSeatNumber).compare(o1, o2);
+		public int compare(SeatView s1, SeatView s2) {			
+			return Comparator.comparing(SeatView::getRowNumber).thenComparing(SeatView::getSeatNumber).compare(s1, s2);
 		}
 		
 	}

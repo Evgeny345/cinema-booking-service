@@ -14,8 +14,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +53,6 @@ public class ShowTimeServiceImpl implements ShowTimeService{
 	private MovieService movieService;
 	private EntityManager em;
 	private EntityViewManager evm;
-	private static final Logger logger = LogManager.getLogger(ShowTimeServiceImpl.class);
 	private TicketRepository ticketRepository;
 	private static final Random random = new Random();
 	

@@ -13,9 +13,9 @@ public class CinemaWorkingHoursComparator implements Comparator <LocalDateTime> 
 	public void setCinemaWorkingHousrs(CinemaWorkingHours cinemaWorkingHousrs) {this.cinemaWorkingHousrs = cinemaWorkingHousrs;}
 	
 	@Override
-	public int compare(LocalDateTime o1, LocalDateTime o2) {
+	public int compare(LocalDateTime d1, LocalDateTime d2) {
 		if(cinemaWorkingHousrs.checkOpenAndCloseDuringOneDay())
-			return o1.compareTo(o2);
+			return d1.compareTo(d2);
 		return 0;
 	}
 

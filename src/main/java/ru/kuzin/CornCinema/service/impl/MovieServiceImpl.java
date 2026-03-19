@@ -9,10 +9,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,8 +57,7 @@ public class MovieServiceImpl implements MovieService {
 	private CriteriaBuilderFactory cbf;
 	private PersonService personService;
 	private AmpluaService ampluaService;
-	private static final Logger logger = LogManager.getLogger(MovieServiceImpl.class);
-	
+
 	@Autowired
 	public void setEntityManager(EntityManager entityManager) {this.entityManager = entityManager;}
 	@Autowired
@@ -214,7 +210,7 @@ public class MovieServiceImpl implements MovieService {
 	/**
 	 * Method, which get list of all existing movies from DB, for set or remove isPlayingNow attribute.
 	 * LocalDate startPeriod attribute is need to control whether remove movie from showing, 
-	 * if show times since this date are exist, then it's impossible
+	 * if show times since this date are exist, then its impossible
 	 * So, list of available to showing movies is generated.
 	 */
 	
@@ -270,7 +266,6 @@ public class MovieServiceImpl implements MovieService {
 	
 	@Override
 	public void deletePoster(String directoryName, Integer movieId) {
-		//UpdateCriteriaBuilder<Movie> cb = cbf.update(entityManager, Movie.class, "movie").set("poster", null).where("id").eq(movieId).end();
 		MovieCreateView movie = movieRepository.getMovieCreateViewById(movieId);
 		movie.setPoster(null);
 		movieRepository.save(movie);
