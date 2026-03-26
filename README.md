@@ -36,7 +36,7 @@ data validation is performing on the service side using package ```jakarta.valid
 centralized exception class handling implemented in the app with annotation ```@ControllerAdvice```. In case of thymeleaf templates exception, class ```filters.ThymeleafExceptionsIntreceptor```, which implements ```jakarta.servlet.Filter```, is provided.
 
 ### Data base model
-the application database consists of 18 tables which are mapped into 16 entities via Hibernate. Data access layer implemented via Spring Data JPA
+the application [database](db_schema.png "data base schema") consists of 18 tables which are mapped into 16 entities via Hibernate. Data access layer implemented via Spring Data JPA
 
 ### DTO
 DTO layer is represent by Blaze-Persistence's entity views. Also entity views was used as form model.
