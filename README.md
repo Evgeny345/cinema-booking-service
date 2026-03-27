@@ -12,11 +12,11 @@ This training project was created as a study for Spring, Blaze Persistence and r
   * show times for this movie by date and time
 * Show time
   * displaying available tickets according to category of seat
-  * possibility to book up to five tickets at a time
+  * possibility to [book up](src/main/resources/static/img/screenshot8.png) to five tickets at a time
   * creating QR code to confirm booking
 * Personal account
   * displaying available booking
-  * displaying QR code to confirm booking
+  * [displaying QR code](src/main/resources/static/img/screenshot7.png) to confirm booking
 * Admin panel
   * movies and show times: add, edit, delete
   * set up movie to showing and withdrawal from theaters
@@ -25,7 +25,7 @@ This training project was created as a study for Spring, Blaze Persistence and r
   * registration and authorization of customers
   * restricted access to the control panel
 * In additional
-  * displaying future show times by hall, date and time
+  * [displaying future show times](src/main/resources/static/img/screenshot11.png) by hall, date and time
   * movie theater info
   * scheme of halls
 ## Features
