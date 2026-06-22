@@ -83,7 +83,7 @@ public class CinemaWorkingHours {
 		LocalDate startDayForSchedule = showTimeStart.toLocalDate();
 		LocalTime startTimeOfShowTime = showTimeStart.toLocalTime();
 		
-		if(startTimeOfShowTime.isAfter(midnight) && startTimeOfShowTime.isBefore(getClosingTime()))
+		if(startTimeOfShowTime.isAfter(midnight) && !checkOpenAndCloseDuringOneDay())
 			startDayForSchedule = showTimeStart.toLocalDate().minusDays(1);
 		if(startTimeOfShowTime.equals(midnight))
 			startDayForSchedule = checkOpenAndCloseDuringOneDay()? startDayForSchedule: showTimeStart.toLocalDate().minusDays(1);
